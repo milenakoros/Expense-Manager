@@ -1,77 +1,89 @@
-const fs = require('fs');
+const pool = require('../db/db');
 
-const readData = () => JSON.parse(fs.readFileSync('data.json', 'utf8'));
-const writeData = (data) => fs.writeFileSync('data.json', JSON.stringify(data, null, 2));
-
-exports.getExpenses = (req, res) => {
-    const expenses = readData();
-    res.json(expenses);
+exports.getExpenses = async (req, res) => {
+  try {
+    const [rows] = await pool.query(`
+      SELECT expenses.*, categories.name AS category_name 
+      FROM expenses 
+      LEFT JOIN categories ON expenses.category_id = categories.id
+    `);
+    res.json(rows);
+  } catch (error) {
+    console.error('Error fetching expenses:', error);
+    res.status(500).send('Failed to fetch expenses.');
+  }
 };
 
-exports.getExpense = (req, res) => {
-    const expenses = readData();
-    const expense = expenses.find(e => e.id === parseInt(req.params.id));
-    if (!expense) return res.status(404).send('Wydatek nie znaleziony.');
-    res.json(expense);
-};
+exports.getExpense = async (req, res) => {
+  try {
+    const [rows] = await pool.query(`
+      SELECT expenses.*, categories.name AS category_name 
+      FROM expenses 
+      LEFT JOIN categories ON expenses.category_id = categories.id
+      WHERE expenses.id = ?
+    `, [req.params.id]);
 
-exports.addExpense = (req, res) => {
-    const { title, price, body } = req.body;
-    const expenses = readData();
-    const newExpense = {
-        id: expenses.length ? expenses[expenses.length - 1].id + 1 : 1,
-        title: title.trim(),
-        body: body || "",
-        price: parseFloat(price),
-    };
-    expenses.push(newExpense);
-    writeData(expenses);
-    res.status(201).json(newExpense);
-};
-
-exports.getExpense = (req, res) => {
-    const expenses = readData();
-    const expense = expenses.find(e => e.id === parseInt(req.params.id));
-  
-    if (!expense) {
-      return res.status(404).send('Wydatek nie znaleziony.');
+    if (rows.length === 0) {
+      return res.status(404).send('Expense not found.');
     }
-  
-    res.json(expense);
+    res.json(rows[0]);
+  } catch (error) {
+    console.error('Error fetching expense:', error);
+    res.status(500).send('Failed to fetch expense.');
+  }
 };
-  
 
-exports.deleteExpense = (req, res) => {
-    const expenses = readData();
-    const expenseIndex = expenses.findIndex(e => e.id === parseInt(req.params.id));
-  
-    if (expenseIndex === -1) {
-      return res.status(404).send('Wydatek nie znaleziony.');
+exports.addExpense = async (req, res) => {
+  try {
+    const { title, price, note, date, categoryId, userId } = req.body;
+
+    if (!title || !price || !date || !categoryId || !userId) {
+      return res.status(400).send('All required fields must be filled.');
     }
-  
-    expenses.splice(expenseIndex, 1);
-    writeData(expenses);
-    res.send('Wydatek został usunięty.');
+
+    const [result] = await pool.query(
+      'INSERT INTO expenses (title, price, note, date, category_id, user_id) VALUES (?, ?, ?, ?, ?, ?)',
+      [title, price, note || null, date, categoryId, userId]
+    );
+
+    res.status(201).json({ id: result.insertId, ...req.body });
+  } catch (error) {
+    console.error('Error adding expense:', error);
+    res.status(500).send('Failed to add expense.');
+  }
 };
-  
-exports.updateExpense = (req, res) => {
-    const expenses = readData();
-    const expenseIndex = expenses.findIndex(e => e.id === parseInt(req.params.id));
-  
-    if (expenseIndex === -1) {
-      return res.status(404).send('Wydatek nie znaleziony.');
+
+exports.updateExpense = async (req, res) => {
+  try {
+    const { title, price, note, date, categoryId } = req.body;
+
+    const [result] = await pool.query(
+      'UPDATE expenses SET title = ?, price = ?, note = ?, date = ?, category_id = ? WHERE id = ?',
+      [title, price, note || null, date, categoryId, req.params.id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).send('Expense not found.');
     }
-  
-    const updatedExpense = {
-      ...expenses[expenseIndex],
-      title: req.body.title || expenses[expenseIndex].title,
-      body: req.body.body || expenses[expenseIndex].body,
-      price: req.body.price !== undefined ? parseFloat(req.body.price) : expenses[expenseIndex].price,
-    };
-  
-    expenses[expenseIndex] = updatedExpense;
-    writeData(expenses);
-  
-    res.json(updatedExpense);
+
+    res.send('Expense updated successfully.');
+  } catch (error) {
+    console.error('Error updating expense:', error);
+    res.status(500).send('Failed to update expense.');
+  }
 };
-  
+
+exports.deleteExpense = async (req, res) => {
+  try {
+    const [result] = await pool.query('DELETE FROM expenses WHERE id = ?', [req.params.id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).send('Expense not found.');
+    }
+
+    res.send('Expense deleted successfully.');
+  } catch (error) {
+    console.error('Error deleting expense:', error);
+    res.status(500).send('Failed to delete expense.');
+  }
+};

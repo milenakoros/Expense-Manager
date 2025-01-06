@@ -8,7 +8,7 @@ const Expense = sequelize.define('Expense', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  amount: {
+  price: {
     type: DataTypes.FLOAT,
     allowNull: false,
   },
@@ -21,7 +21,6 @@ const Expense = sequelize.define('Expense', {
   },
 });
 
-// Define relationships
 Expense.belongsTo(User, { onDelete: 'CASCADE' });
 Expense.belongsTo(Category, { onDelete: 'CASCADE' });
 
