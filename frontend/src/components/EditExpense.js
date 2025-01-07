@@ -69,6 +69,15 @@ const EditExpense = () => {
           }
         });
     }
+  };
+
+  const handleCancel = () => {
+    const confirmCancel = window.confirm(
+      "Czy na pewno chcesz anulować? Wprowadzone dane zostaną utracone."
+    );
+    if (confirmCancel) {
+      navigate("/");
+    }
   };  
 
   if (loading) return <p>Ładowanie danych...</p>;
@@ -127,6 +136,9 @@ const EditExpense = () => {
           </button>
         </div>
         <button type="submit">Zapisz zmiany</button>
+        <button type="button" onClick={handleCancel} className="btn-cancel">
+          Anuluj
+        </button>
       </form>
     </div>
   );
