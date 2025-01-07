@@ -78,7 +78,7 @@ const EditExpense = () => {
     if (confirmCancel) {
       navigate("/");
     }
-  };  
+  };
 
   if (loading) return <p>Ładowanie danych...</p>;
 
