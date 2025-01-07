@@ -79,6 +79,7 @@ const EditExpense = () => {
           value={price}
           onChange={(e) => setPrice(e.target.value)}
           step="0.01"
+          min="0"
           required
         />
         <label htmlFor="date">Data:</label>
