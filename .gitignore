@@ -2,7 +2,7 @@
 
 # dependencies
 /node_modules
-/backend/src/db
+/backend/src/db/db.js
 /.vscode
 /.pnp
 .pnp.js
@@ -424,4 +424,3 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
-backend/src/db/db.js
