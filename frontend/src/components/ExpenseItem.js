@@ -11,7 +11,7 @@ const ExpenseItem = ({ expense, onDelete }) => {
   return (
     <div className="expense-item">
       <h3>{expense.title}</h3>
-      <p>{expense.body}</p>
+      <p>{expense.note}</p>
       <p><strong>Cena:</strong> {expense.price} zł</p>
       <div className="expense-actions">
         <Link to={`/expenses/${expense.id}`} className="btn btn-details">

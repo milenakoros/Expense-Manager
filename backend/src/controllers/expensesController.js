@@ -9,8 +9,7 @@ exports.getExpenses = async (req, res) => {
     `);
     res.json(rows);
   } catch (error) {
-    console.error('Error fetching expenses:', error);
-    res.status(500).send('Failed to fetch expenses.');
+    res.status(500).send('Nie udało się pobrać wydatków.');
   }
 };
 
@@ -23,13 +22,12 @@ exports.getExpense = async (req, res) => {
       WHERE expenses.id = ?
     `, [req.params.id]);
 
-    if (rows.length === 0) {
-      return res.status(404).send('Expense not found.');
+    if (!rows.length) {
+      return res.status(404).send('Wydatek nie znaleziony.');
     }
     res.json(rows[0]);
   } catch (error) {
-    console.error('Error fetching expense:', error);
-    res.status(500).send('Failed to fetch expense.');
+    res.status(500).send('Nie udało się pobrać wydatku.');
   }
 };
 
@@ -38,13 +36,14 @@ exports.addExpense = async (req, res) => {
     const { title, price, note, date, categoryId, userId } = req.body;
 
     if (!title || !price || !date || !categoryId || !userId) {
-      return res.status(400).send('All required fields must be filled.');
+      return res.status(400).send('Wszystkie wymagane pola muszą być wypełnione.');
     }
 
     const [result] = await pool.query(
       'INSERT INTO expenses (title, price, note, date, category_id, user_id) VALUES (?, ?, ?, ?, ?, ?)',
       [title, price, note || null, date, categoryId, userId]
     );
+
 
     res.status(201).json({ id: result.insertId, ...req.body });
   } catch (error) {

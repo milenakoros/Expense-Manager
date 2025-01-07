@@ -28,7 +28,8 @@ const ExpenseDetails = () => {
       <h1>Szczegóły Wydatku</h1>
       <div className="details-box">
         <h2>{expense.title}</h2>
-        <p><strong>Opis:</strong> {expense.body || "Brak opisu"}</p>
+        <p><strong>Opis:</strong> {expense.note || "Brak opisu"}</p>
+        <p><strong>Kategoria:</strong> {expense.category_name || "Brak"}</p>
         <p><strong>Cena:</strong> {expense.price} zł</p>
       </div>
       <Link to="/" className="btn btn-back">Powrót</Link>
