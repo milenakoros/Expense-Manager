@@ -96,7 +96,6 @@ const EditExpense = () => {
           onChange={(e) => setCategoryId(e.target.value)}
           required
         >
-          <option value="">Wybierz kategorię</option>
           {categories.map((category) => (
             <option key={category.id} value={category.id}>
               {category.name}

@@ -236,3 +236,25 @@ textarea {
 .btn-delete:active {
   background-color: #b71c1c;
 }
+
+form select {
+  padding: 10px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: white;
+  color: #405c0a;
+}
+
+form select:focus {
+  outline: none;
+  border-color: #668d15;
+  box-shadow: 0px 0px 5px rgba(102, 141, 21, 0.5);
+}
+
+form option {
+  color: #405c0a;
+  font-size: 1em;
+}

@@ -29,8 +29,9 @@ const ExpenseDetails = () => {
       <div className="details-box">
         <h2>{expense.title}</h2>
         <p><strong>Opis:</strong> {expense.note || "Brak opisu"}</p>
-        <p><strong>Kategoria:</strong> {expense.category_name || "Brak"}</p>
-        <p><strong>Cena:</strong> {expense.price} zł</p>
+        <p><strong>Cena:</strong> {Number(expense.price).toFixed(2)} zł</p>
+        <p><strong>Kategoria:</strong> {expense.category_name}</p>
+        <p><strong>Data:</strong> {new Date(expense.date).toLocaleDateString("pl-PL")}</p>
       </div>
       <Link to="/" className="btn btn-back">Powrót</Link>
       <Link to={`/expenses/${id}/edit`} className="btn btn-edit">Edytuj</Link>

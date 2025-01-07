@@ -11,8 +11,10 @@ const ExpenseItem = ({ expense, onDelete }) => {
   return (
     <div className="expense-item">
       <h3>{expense.title}</h3>
-      <p>{expense.note}</p>
-      <p><strong>Cena:</strong> {expense.price} zł</p>
+      <p><strong>Opis:</strong> {expense.note || "Brak opisu"}</p>
+      <p><strong>Cena:</strong> {Number(expense.price).toFixed(2)} zł</p>
+      <p><strong>Kategoria:</strong> {expense.category_name}</p>
+      <p><strong>Data:</strong> {new Date(expense.date).toLocaleDateString("pl-PL")}</p>
       <div className="expense-actions">
         <Link to={`/expenses/${expense.id}`} className="btn btn-details">
           Szczegóły
