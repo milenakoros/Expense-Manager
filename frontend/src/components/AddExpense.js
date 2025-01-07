@@ -47,6 +47,26 @@ const AddExpense = () => {
     }
   };
 
+  const handleAddCategory = () => {
+    const newCategory = window.prompt("Podaj nazwę nowej kategorii:");
+    if (newCategory) {
+      axios
+        .post("http://localhost:5000/categories", { name: newCategory })
+        .then((response) => {
+          setCategories([...categories, response.data]);
+          setCategoryId(response.data.id);
+          alert("Kategoria została dodana.");
+        })
+        .catch((error) => {
+          if (error.response && error.response.status === 400) {
+            alert("Kategoria o tej nazwie już istnieje.");
+          } else {
+            alert("Nie udało się dodać kategorii.");
+          }
+        });
+    }
+  };  
+
   return (
     <div>
       <h1>Dodaj Wydatek</h1>
@@ -86,19 +106,23 @@ const AddExpense = () => {
           required
         />
         <label htmlFor="category">Kategoria:</label>
-        <select
-          id="category"
-          value={categoryId}
-          onChange={(e) => setCategoryId(e.target.value)}
-          required
-        >
-          <option value="">Wybierz kategorię</option>
-          {categories.map((category) => (
-            <option key={category.id} value={category.id}>
-              {category.name}
-            </option>
-          ))}
-        </select>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <select
+            id="category"
+            value={categoryId}
+            onChange={(e) => setCategoryId(e.target.value)}
+            required
+          >
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+          <button type="button" onClick={handleAddCategory} style={{ padding: '5px 10px', background: '#668d15', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+            Dodaj kategorię
+          </button>
+        </div>
         <button type="submit">Dodaj Wydatek</button>
         <button type="button" onClick={handleCancel} className="btn-cancel">
           Anuluj
