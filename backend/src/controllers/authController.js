@@ -33,7 +33,6 @@ exports.register = [
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
-        console.log('Zahasłowane hasło:', hashedPassword); // Debug
         await pool.query(
         'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
         [username, email, hashedPassword]
@@ -68,11 +67,8 @@ exports.login = [
 
         const isMatch = await bcrypt.compare(password, user[0].password);
         if (!isMatch) {
-        console.log('Hasło użytkownika:', password); // Debug
-        console.log('Hasło w bazie:', user[0].password); // Debug
         return res.status(400).json({ message: 'Nieprawidłowe hasło.' });
         }
-
 
       const token = jwt.sign(
         { id: user[0].id, role: user[0].role },
