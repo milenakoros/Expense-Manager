@@ -1,11 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import ExpenseList from "./components/ExpenseList";
-import ExpenseDetails from "./components/ExpenseDetails";
-import EditExpense from "./components/EditExpense";
-import AddExpense from "./components/AddExpense";
-import Register from './components/Register';
-import Login from './components/Login';
+import ExpenseList from "./components/expenses/ExpenseList";
+import ExpenseDetails from "./components/expenses/ExpenseDetails";
+import EditExpense from "./components/expenses/EditExpense";
+import AddExpense from "./components/expenses/AddExpense";
+import Register from './components/auth/Register';
+import Login from './components/auth/Login';
 
 const App = () => {
   return (
