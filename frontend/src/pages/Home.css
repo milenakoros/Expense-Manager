@@ -1,0 +1,85 @@
+body {
+    margin: 0;
+    font-family: "Arial", sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 100vh;
+    background-image: url("Paprocie-tlo.png");
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+}
+
+.home-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.logo img {
+    height: 50px;
+}
+
+.home-nav {
+    display: flex;
+}
+
+.home-nav a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+.home-nav a:hover {
+    color: #007b5e;
+}
+
+.home-main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.home-title {
+    font-size: 5rem;
+    font-weight: bold;
+    color: #2d6a4f;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.home-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    background-color: #2d6a4f;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.home-button a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.home-button:hover {
+    background-color: #40916c;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+}
