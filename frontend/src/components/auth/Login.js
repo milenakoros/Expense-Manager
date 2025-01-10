@@ -11,7 +11,7 @@ const Login = () => {
     try {
       const response = await axios.post('http://localhost:5000/auth/login', formData);
       localStorage.setItem('token', response.data.token);
-      alert('Logowanie zakończone sukcesem!');
+      //alert('Logowanie zakończone sukcesem!');
       navigate('/user');
     } catch (error) {
       alert('Nieprawidłowy adres e-mail lub hasło.');

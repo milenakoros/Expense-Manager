@@ -8,13 +8,10 @@ body {
 .home-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
     min-height: 100vh;
     background-image: url("Paprocie-tlo.png");
     background-size: cover;
     background-position: center;
-    color: #fff;
 }
 
 .home-header {
@@ -28,21 +25,32 @@ body {
 }
 
 .logo img {
-    height: 50px;
+    height: 60px;
 }
 
 .home-nav {
     display: flex;
+    background: none;
+    box-shadow: none;
 }
 
 .home-nav a {
     text-decoration: none;
-    color: #333;
+    color: #ffffff;
+    font-size: 1.2rem;
+    background-color: rgba(0, 0, 0, 0.2);
+    border: rgb(255, 255, 255);
+    border-style: groove;
+    border-radius: 100px;
+    cursor: pointer;
+    text-transform: uppercase;
     font-weight: bold;
+    letter-spacing: 2px;
+    padding: 10px 20px;
 }
 
 .home-nav a:hover {
-    color: #007b5e;
+    background-color: rgba(14, 116, 51, 0.3);
 }
 
 .home-main {
@@ -55,23 +63,38 @@ body {
 }
 
 .home-title {
-    font-size: 5rem;
+    font-size: 8rem;
+    position: relative;
     font-weight: bold;
-    color: #2d6a4f;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    color: #fdfff4;
+    text-shadow: 4px 4px 10px rgba(9, 74, 21, 0.5);
+}
+
+.home-title-top {
+    position: relative;
+    left: -200px;
+}
+
+.home-title-bottom {
+    position: relative;
+    right: -200px;
 }
 
 .home-button {
-    margin-top: 20px;
-    padding: 10px 20px;
+    margin-top: 80px;
+    padding: 20px 20px;
     font-size: 1.2rem;
-    background-color: #2d6a4f;
+    background-color: rgba(0, 0, 0, 0.2);
     color: #fff;
-    border: none;
-    border-radius: 5px;
+    border: rgb(255, 255, 255);
+    border-style: dashed;
+    border-radius: 100px;
     cursor: pointer;
     text-transform: uppercase;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    font-weight: bold;
+    letter-spacing: 2px;
+    transition: background-color 0.3s ease;
 }
 
 .home-button a {
@@ -80,6 +103,5 @@ body {
 }
 
 .home-button:hover {
-    background-color: #40916c;
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+    background-color: rgba(14, 116, 51, 0.3);
 }

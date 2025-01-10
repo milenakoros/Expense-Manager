@@ -7,6 +7,7 @@ const UserNav = () => {
             <Link to="/user/profile">Profil</Link>
             <Link to="/user/expenses">Wydatki</Link>
             <Link to="/user/expenses/add">Dodaj Wydatek</Link>
+            <Link to="/user/categories">Kategorie</Link>
         </nav>
     );
 };

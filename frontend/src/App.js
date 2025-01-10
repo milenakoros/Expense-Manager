@@ -5,17 +5,13 @@ import ExpenseDetails from "./components/expenses/ExpenseDetails";
 import EditExpense from "./components/expenses/EditExpense";
 import AddExpense from "./components/expenses/AddExpense";
 import Register from './components/auth/Register';
-import Login from './components/auth/Login';
-import Home from "./pages/Home";
 import UserDashboard from "./pages/userDashboard/UserDashboard";
-
+import Login from './components/auth/Login';
+import Home from "./pages/homeDashboard/Home";
 
 const App = () => {
   return (
     <Router>
-      {/* <nav>
-        <Link to="/">Lista Wydatków</Link> | <Link to="/add">Dodaj Wydatek</Link>
-      </nav> */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/expenses" element={<ExpenseList />} />
