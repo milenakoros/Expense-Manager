@@ -7,16 +7,20 @@ exports.register = [
     body('username').notEmpty().withMessage('Nazwa użytkownika jest wymagana.'),
     body('email').isEmail().withMessage('Nieprawidłowy format adresu e-mail.'),
     body('password')
-        .isLength({ min: 8 })
-        .withMessage('Hasło musi mieć co najmniej 8 znaków.')
-        .matches(/[a-z]/)
-        .withMessage('Hasło musi zawierać co najmniej jedną małą literę.')
-        .matches(/[A-Z]/)
-        .withMessage('Hasło musi zawierać co najmniej jedną wielką literę.')
-        .matches(/\d/)
-        .withMessage('Hasło musi zawierać co najmniej jedną cyfrę.')
-        .matches(/[^a-zA-Z0-9]/)
-        .withMessage('Hasło musi zawierać co najmniej jeden znak specjalny.'),
+        .custom((value) => {
+            const hasMinLength = value.length >= 8;
+            const hasLowerCase = /[a-z]/.test(value);
+            const hasUpperCase = /[A-Z]/.test(value);
+            const hasDigit = /\d/.test(value);
+            const hasSpecialChar = /[^a-zA-Z0-9]/.test(value);
+
+            if (!hasMinLength || !hasLowerCase || !hasUpperCase || !hasDigit || !hasSpecialChar) {
+                throw new Error(
+                    'Hasło musi mieć co najmniej 8 znaków, zawierać małą i wielką literę, cyfrę oraz znak specjalny.'
+                );
+            }
+            return true;
+        }),
 
     async (req, res) => {
         const errors = validationResult(req);
@@ -37,7 +41,6 @@ exports.register = [
                 'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
                 [username, email, hashedPassword]
             );
-
 
             res.status(201).json({ message: 'Rejestracja zakończona sukcesem!' });
         } catch (error) {
