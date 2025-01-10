@@ -6,6 +6,7 @@ import UserAddExpense from "../userExpenses/UserAddExpense";
 import UserEditExpense from "../userExpenses/UserEditExpense";
 import UserCategoryList from "../userCategories/UserCategoryList";
 import UserNav from "./UserNav";
+import "../../../styles/User.css"
 
 const UserDashboard = () => {
     return (

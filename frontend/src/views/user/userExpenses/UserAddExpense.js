@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import "../../../styles/User.css"
 
 const UserAddExpense = () => {
     const [title, setTitle] = useState("");
@@ -90,8 +91,8 @@ const UserAddExpense = () => {
     return (
         <div>
             <h1>Dodaj Wydatek</h1>
-            {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
-            {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+            {successMessage && <p className="success-message">{successMessage}</p>}
             <form onSubmit={handleSubmit}>
                 <label htmlFor="title">Tytuł:</label>
                 <input
@@ -128,7 +129,7 @@ const UserAddExpense = () => {
                     required
                 />
                 <label htmlFor="category">Kategoria:</label>
-                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <div className="form-category">
                     <select
                         id="category"
                         value={categoryId}
@@ -148,12 +149,18 @@ const UserAddExpense = () => {
                         value={newCategory}
                         onChange={(e) => setNewCategory(e.target.value)}
                     />
-                    <button type="button" onClick={handleAddCategory}>
+                    <button
+                        type="button"
+                        className="btn-add-category"
+                        onClick={handleAddCategory}
+                    >
                         Dodaj kategorię
                     </button>
                 </div>
-                <button type="submit">Dodaj Wydatek</button>
-                <button type="button" onClick={handleCancel}>
+                <button type="submit" className="btn-submit">
+                    Dodaj Wydatek
+                </button>
+                <button type="button" className="btn-cancel" onClick={handleCancel}>
                     Anuluj
                 </button>
             </form>
