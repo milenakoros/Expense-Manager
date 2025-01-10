@@ -2,10 +2,10 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Lato', sans-serif;
 }
 
 .auth-body {
-  font-family: 'Lato', sans-serif;
   background-color: #EDF4ED;
   height: 100vh;
   display: flex;
@@ -47,4 +47,24 @@ form button {
   font-size: 0.9em;
   margin-bottom: 5px;
   text-align: center;
+}
+
+.btn-back-to-home {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  background-color: #007BFF;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1.3em;
+  transition: background-color 0.3s ease;
+}
+
+.btn-back-to-home:hover {
+  background-color: #0056b3;
+}
+
+.btn-back-to-home:active {
+  background-color: #003d80;
 }

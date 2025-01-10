@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import "./auth.css";
+import { useNavigate, Link } from 'react-router-dom';
+import "../../styles/Auth.css";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -42,6 +42,9 @@ const Login = () => {
         />
         {errorMessage && <p className="auth-error">{errorMessage}</p>}
         <button type="submit">Zaloguj się</button>
+        <Link to="/" className="btn-back-to-home">
+          Powrót do strony głównej
+        </Link>
       </form>
     </div>
   );
