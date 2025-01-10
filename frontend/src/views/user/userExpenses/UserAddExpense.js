@@ -91,8 +91,6 @@ const UserAddExpense = () => {
     return (
         <div>
             <h1>Dodaj Wydatek</h1>
-            {errorMessage && <p className="error-message">{errorMessage}</p>}
-            {successMessage && <p className="success-message">{successMessage}</p>}
             <form onSubmit={handleSubmit}>
                 <label htmlFor="title">Tytuł:</label>
                 <input
@@ -157,6 +155,8 @@ const UserAddExpense = () => {
                         Dodaj kategorię
                     </button>
                 </div>
+                {errorMessage && <p className="error-message">{errorMessage}</p>}
+                {successMessage && <p className="success-message">{successMessage}</p>}
                 <button type="submit" className="btn-submit">
                     Dodaj Wydatek
                 </button>
