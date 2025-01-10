@@ -6,7 +6,6 @@ const UserCategoryList = () => {
     const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
-        // Pobierz kategorie użytkownika
         axios
             .get("http://localhost:5000/api/user/categories", {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },

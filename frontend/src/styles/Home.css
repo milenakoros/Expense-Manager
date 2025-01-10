@@ -9,7 +9,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-image: url("Paprocie-tlo.png");
+    background-image: url("../../public/images/Paprocie-tlo.png");
     background-size: cover;
     background-position: center;
 }

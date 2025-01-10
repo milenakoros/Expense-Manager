@@ -1,10 +1,10 @@
 import React from "react";
 import { Routes, Route, Link } from "react-router-dom"; // Usuń BrowserRouter
 import UserProfile from "./UserProfile";
-import UserExpenseList from "../../components/userExpenses/UserExpenseList";
-import UserAddExpense from "../../components/userExpenses/UserAddExpense";
-import UserEditExpense from "../../components/userExpenses/UserEditExpense";
-import UserCategoryList from "../../components/userCategories/UserCategoryList";
+import UserExpenseList from "../userExpenses/UserExpenseList";
+import UserAddExpense from "../userExpenses/UserAddExpense";
+import UserEditExpense from "../userExpenses/UserEditExpense";
+import UserCategoryList from "../userCategories/UserCategoryList";
 import UserNav from "./UserNav";
 
 const UserDashboard = () => {
