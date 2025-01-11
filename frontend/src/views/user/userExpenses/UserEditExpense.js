@@ -155,6 +155,7 @@ const UserEditExpense = () => {
                     ))}
                 </select>
                 <input
+                    className="form-input-add-category"
                     type="text"
                     placeholder="Dodaj nową kategorię"
                     value={newCategory}
@@ -168,7 +169,7 @@ const UserEditExpense = () => {
                 >
                     Dodaj kategorię
                 </button>
-                <button type="submit">Zapisz zmiany</button>
+                <button className="btn-submit">Zapisz zmiany</button>
                 <button className="btn-cancel" onClick={handleCancel}>
                     Anuluj
                 </button>

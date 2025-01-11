@@ -127,34 +127,33 @@ const UserAddExpense = () => {
                     required
                 />
                 <label htmlFor="category">Kategoria:</label>
-                <div className="form-category">
-                    <select
-                        id="category"
-                        value={categoryId}
-                        onChange={(e) => setCategoryId(e.target.value)}
-                        required
-                    >
-                        <option value="">Wybierz kategorię</option>
-                        {categories.map((category) => (
-                            <option key={category.id} value={category.id}>
-                                {category.name}
-                            </option>
-                        ))}
-                    </select>
-                    <input
-                        type="text"
-                        placeholder="Dodaj nową kategorię"
-                        value={newCategory}
-                        onChange={(e) => setNewCategory(e.target.value)}
-                    />
-                    <button
-                        type="button"
-                        className="btn-add-category"
-                        onClick={handleAddCategory}
-                    >
-                        Dodaj kategorię
-                    </button>
-                </div>
+                <select
+                    id="category"
+                    value={categoryId}
+                    onChange={(e) => setCategoryId(e.target.value)}
+                    required
+                >
+                    <option value="">Wybierz kategorię</option>
+                    {categories.map((category) => (
+                        <option key={category.id} value={category.id}>
+                            {category.name}
+                        </option>
+                    ))}
+                </select>
+                <input
+                    className="form-input-add-category"
+                    type="text"
+                    placeholder="Dodaj nową kategorię"
+                    value={newCategory}
+                    onChange={(e) => setNewCategory(e.target.value)}
+                />
+                <button
+                    type="button"
+                    className="btn-add-category"
+                    onClick={handleAddCategory}
+                >
+                    Dodaj kategorię
+                </button>
                 {errorMessage && <p className="error-message">{errorMessage}</p>}
                 {successMessage && <p className="success-message">{successMessage}</p>}
                 <button type="submit" className="btn-submit">
