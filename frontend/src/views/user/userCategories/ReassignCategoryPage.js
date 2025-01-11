@@ -1,87 +1,130 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import "../../../styles/User.css";
 
 const ReassignCategoryPage = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const [expenses, setExpenses] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [reassignToCategoryId, setReassignToCategoryId] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const [expenses, setExpenses] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [reassignToCategoryId, setReassignToCategoryId] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+    const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:5000/api/user/categories/${id}/expenses`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      })
-      .then((response) => setExpenses(response.data))
-      .catch(() => setErrorMessage("Nie udało się pobrać wydatków dla tej kategorii."));
+    useEffect(() => {
+        // Fetch expenses associated with the category
+        axios
+            .get(`http://localhost:5000/api/user/categories/${id}/expenses`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+            })
+            .then((response) => setExpenses(response.data))
+            .catch(() =>
+                setErrorMessage("Nie udało się pobrać wydatków dla tej kategorii.")
+            );
 
-    axios
-      .get("http://localhost:5000/api/user/categories", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      })
-      .then((response) => setCategories(response.data))
-      .catch(() => setErrorMessage("Nie udało się pobrać kategorii."));
-  }, [id]);
+        axios
+            .get("http://localhost:5000/api/user/categories", {
+                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+            })
+            .then((response) => setCategories(response.data))
+            .catch(() =>
+                setErrorMessage("Nie udało się pobrać listy kategorii.")
+            )
+            .finally(() => setLoading(false));
+    }, [id]);
 
-  const handleReassign = () => {
-    axios
-      .put(
-        `http://localhost:5000/api/user/categories/${id}/reassign`,
-        { newCategoryId: reassignToCategoryId },
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
-      )
-      .then(() => {
-        alert("Wydatki zostały przeniesione, a kategoria usunięta.");
+    const handleReassign = () => {
+        axios
+            .put(
+                `http://localhost:5000/api/user/categories/${id}/reassign`,
+                { newCategoryId: reassignToCategoryId },
+                {
+                    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+                }
+            )
+            .then(() => {
+                alert("Wydatki zostały przeniesione, a kategoria usunięta.");
+                navigate("/categories");
+            })
+            .catch(() => alert("Nie udało się przenieść wydatków."));
+    };
+
+    const handleCancel = () => {
         navigate("/categories");
-      })
-      .catch(() => alert("Nie udało się przenieść wydatków."));
-  };
+    };
 
-  const handleCancel = () => {
-    navigate("/categories");
-  };
+    const handleAddCategory = () => {
+        navigate("/user/categories/add");
+    };
 
-  return (
-    <div>
-      <h1>Kategoria jest używana</h1>
-      <p>
-        Wydatki przypisane do kategorii muszą zostać przeniesione do innej kategorii.
-      </p>
-      {expenses.length > 0 && (
-        <ul>
-          {expenses.map((expense) => (
-            <li key={expense.id}>{expense.title} - {expense.price} zł</li>
-          ))}
-        </ul>
-      )}
-      <label htmlFor="reassignCategory">Wybierz nową kategorię:</label>
-      <select
-        id="reassignCategory"
-        value={reassignToCategoryId}
-        onChange={(e) => setReassignToCategoryId(e.target.value)}
-      >
-        <option value="">-- Wybierz kategorię --</option>
-        {categories
-          .filter((category) => category.id !== parseInt(id))
-          .map((category) => (
-            <option key={category.id} value={category.id}>
-              {category.name}
-            </option>
-          ))}
-      </select>
-      <div>
-        <button onClick={handleReassign} disabled={!reassignToCategoryId}>
-          Przenieś wydatki
-        </button>
-        <button onClick={handleCancel}>Anuluj</button>
-      </div>
-    </div>
-  );
+    if (loading) {
+        return <p>Ładowanie danych...</p>;
+    }
+
+    return (
+        <div className="reassign-category-page">
+            <div className="header">
+                <h1>Kategoria jest używana</h1>
+                <button className="btn-add-category" onClick={handleAddCategory}>
+                    Dodaj Nową Kategorię
+                </button>
+            </div>
+
+            <p>
+                Wydatki przypisane do tej kategorii muszą zostać przeniesione do innej
+                kategorii.
+            </p>
+
+            {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+
+            {expenses.length > 0 ? (
+                <>
+                    <h2>Wydatki przypisane do tej kategorii:</h2>
+                    <ul className="expense-list">
+                        {expenses.map((expense) => (
+                            <li key={expense.id} className="expense-item">
+                                <strong>Nazwa:</strong> {expense.title} <br />
+                                <strong>Cena:</strong> {expense.price} zł <br />
+                                <strong>Data:</strong> {new Date(expense.date).toLocaleDateString()}
+                            </li>
+                        ))}
+                    </ul>
+                </>
+            ) : (
+                <p>Brak wydatków przypisanych do tej kategorii.</p>
+            )}
+
+            <label htmlFor="reassignCategory">Wybierz nową kategorię:</label>
+            <select
+                id="reassignCategory"
+                value={reassignToCategoryId}
+                onChange={(e) => setReassignToCategoryId(e.target.value)}
+            >
+                <option value="">-- Wybierz kategorię --</option>
+                {categories
+                    .filter((category) => category.id !== parseInt(id))
+                    .map((category) => (
+                        <option key={category.id} value={category.id}>
+                            {category.name}
+                        </option>
+                    ))}
+            </select>
+
+            <div className="actions">
+                <button
+                    className="btn-reassign"
+                    onClick={handleReassign}
+                    disabled={!reassignToCategoryId}
+                >
+                    Przenieś wydatki
+                </button>
+                <button className="btn-cancel" onClick={handleCancel}>
+                    Anuluj
+                </button>
+            </div>
+        </div>
+    );
 };
 
 export default ReassignCategoryPage;

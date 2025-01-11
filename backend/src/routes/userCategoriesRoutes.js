@@ -5,11 +5,10 @@ const userCategoriesController = require("../controllers/userCategoriesControlle
 
 router.get("/", authMiddleware, userCategoriesController.getUserCategories);
 router.get("/:id", authMiddleware, userCategoriesController.getUserCategory);
+router.get("/:id/expenses", authMiddleware, userCategoriesController.getExpensesByCategoryId);
 router.put("/:id", authMiddleware, userCategoriesController.updateCategory);
 router.post("/", authMiddleware, userCategoriesController.addUserCategory);
 router.put("/:id/reassign", authMiddleware, userCategoriesController.reassignExpenses);
 router.delete("/:id", authMiddleware, userCategoriesController.deleteCategory);
-router.get("/:id/expenses", authMiddleware, userCategoriesController.getExpensesByCategoryId);
-
 
 module.exports = router;

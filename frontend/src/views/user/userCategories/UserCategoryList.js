@@ -37,8 +37,15 @@ const CategoryList = () => {
           error.response?.status === 400 &&
           error.response?.data?.message.includes("Nie można usunąć")
         ) {
-          // Przeniesienie na stronę ReassignCategoryPage z ID kategorii
-          navigate(`/user/categories/${id}/reassign`);
+          const userConfirmed = window.confirm(
+            `Do kategorii "${categoryToDelete.name}" są przypisane wydatki. Czy chcesz przejść do następnego kroku, aby przenieść wydatki do innej kategorii? Jeśli nie, anulujesz usuwanie.`
+          );
+
+          if (userConfirmed) {
+            navigate(`/user/categories/${id}/reassign`);
+          } else {
+            alert("Usuwanie kategorii zostało anulowane.");
+          }
         } else {
           console.error("Błąd podczas usuwania kategorii:", error.response?.data || error);
           alert("Nie udało się usunąć kategorii.");
@@ -58,7 +65,7 @@ const CategoryList = () => {
     return (
       <div className="header">
         <h1>Twoje Kategorie</h1>
-        <button className="btn-add" onClick={handleAddCategory}>
+        <button className="btn-add-category" onClick={handleAddCategory}>
           Dodaj Nową Kategorię
         </button>
         <p>Brak kategorii do wyświetlenia.</p>
@@ -70,7 +77,7 @@ const CategoryList = () => {
     <div>
       <div className="header">
         <h1>Twoje Kategorie</h1>
-        <button className="btn-add" onClick={handleAddCategory}>
+        <button className="btn-add-category" onClick={handleAddCategory}>
           Dodaj Nową Kategorię
         </button>
       </div>
