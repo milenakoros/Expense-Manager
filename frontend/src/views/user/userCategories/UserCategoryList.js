@@ -25,6 +25,8 @@ const CategoryList = () => {
   }, []);
 
   const handleDelete = (id) => {
+    const categoryToDelete = categories.find((category) => category.id === id);
+
     axios
       .delete(`http://localhost:5000/api/user/categories/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -35,7 +37,7 @@ const CategoryList = () => {
       })
       .catch((error) => {
         if (error.response?.status === 400 && error.response?.data?.message.includes("Nie można usunąć")) {
-          setSelectedCategory(categories.find((category) => category.id === id));
+          setSelectedCategory(categoryToDelete);
           setShowReassignModal(true);
         } else {
           console.error("Błąd podczas usuwania kategorii:", error.response?.data || error);

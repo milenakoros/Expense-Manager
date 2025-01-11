@@ -97,19 +97,25 @@ exports.updateCategory = async (req, res) => {
 };
 
 exports.reassignExpenses = async (req, res) => {
-  const { oldCategoryId, newCategoryId } = req.body;
+  const oldCategoryId = req.params.id;
+  const { newCategoryId } = req.body;
 
-  if (!oldCategoryId || !newCategoryId) {
-    return res.status(400).json({ message: "Obie kategorie są wymagane." });
+  console.log("Rozpoczęcie przenoszenia wydatków...");
+  console.log("Stara kategoria ID:", oldCategoryId);
+  console.log("Nowa kategoria ID:", newCategoryId);
+
+  if (!newCategoryId) {
+    return res.status(400).json({ message: "Nowa kategoria jest wymagana." });
   }
 
   try {
-    const [categories] = await pool.query(
-      "SELECT id FROM categories WHERE id IN (?, ?) AND user_id = ?",
-      [oldCategoryId, newCategoryId, req.user.id]
+    const [targetCategory] = await pool.query(
+      "SELECT id FROM categories WHERE id = ? AND user_id = ?",
+      [newCategoryId, req.user.id]
     );
-    if (categories.length !== 2) {
-      return res.status(400).json({ message: "Nieprawidłowe ID kategorii." });
+
+    if (!targetCategory.length) {
+      return res.status(400).json({ message: "Nieprawidłowe ID nowej kategorii." });
     }
 
     await pool.query(
