@@ -22,7 +22,6 @@ const UserEditExpense = () => {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
             })
             .then((response) => {
-                console.log("Kategorie:", response.data);
                 setCategories(response.data);
             })
             .catch((error) => {
@@ -35,13 +34,12 @@ const UserEditExpense = () => {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
             })
             .then((response) => {
-                console.log("Szczegóły wydatku:", response.data);
-                const { title, note, price, date, categoryId } = response.data;
+                const { title, note, price, date, category_id } = response.data;
                 setTitle(title);
                 setNote(note);
                 setPrice(price);
                 setDate(new Date(date));
-                setCategoryId(categoryId);
+                setCategoryId(category_id);
             })
             .catch((error) => {
                 console.error("Błąd podczas pobierania danych wydatku:", error.response);
@@ -84,7 +82,7 @@ const UserEditExpense = () => {
     return (
         <div>
             <h1>Edytuj Wydatek</h1>
-            {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
             <form onSubmit={handleSubmit}>
                 <label htmlFor="title">Tytuł:</label>
                 <input
