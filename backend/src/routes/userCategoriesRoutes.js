@@ -9,5 +9,7 @@ router.put("/:id", authMiddleware, userCategoriesController.updateCategory);
 router.post("/", authMiddleware, userCategoriesController.addUserCategory);
 router.put("/:id/reassign", authMiddleware, userCategoriesController.reassignExpenses);
 router.delete("/:id", authMiddleware, userCategoriesController.deleteCategory);
+router.get("/:id/expenses", authMiddleware, userCategoriesController.getExpensesByCategoryId);
+
 
 module.exports = router;

@@ -153,3 +153,23 @@ exports.deleteCategory = async (req, res) => {
     res.status(500).json({ message: "Nie udało się usunąć kategorii." });
   }
 };
+
+exports.getExpensesByCategoryId = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const [expenses] = await pool.query(
+      "SELECT * FROM expenses WHERE category_id = ? AND user_id = ?",
+      [id, req.user.id]
+    );
+
+    if (expenses.length === 0) {
+      return res.status(200).json({ message: "Brak wydatków przypisanych do tej kategorii." });
+    }
+
+    res.json(expenses);
+  } catch (error) {
+    console.error("Błąd podczas pobierania wydatków dla kategorii:", error);
+    res.status(500).json({ message: "Nie udało się pobrać wydatków." });
+  }
+};
