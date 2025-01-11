@@ -14,6 +14,8 @@ const UserEditExpense = () => {
     const [categoryId, setCategoryId] = useState("");
     const [categories, setCategories] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
+    const [newCategory, setNewCategory] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
 
     useEffect(() => {
         console.log("ID wydatku:", id);
@@ -46,6 +48,30 @@ const UserEditExpense = () => {
                 setErrorMessage("Nie udało się pobrać danych wydatku.");
             });
     }, [id]);
+
+    const handleAddCategory = () => {
+        if (!newCategory) {
+            setErrorMessage("Nazwa kategorii jest wymagana!");
+            return;
+        }
+
+        axios
+            .post(
+                "http://localhost:5000/api/user/categories",
+                { name: newCategory },
+                { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+            )
+            .then((response) => {
+                setCategories([...categories, response.data]);
+                setCategoryId(response.data.id);
+                setNewCategory("");
+                setSuccessMessage("Kategoria została dodana.");
+            })
+            .catch((error) => {
+                console.error("Błąd podczas dodawania kategorii:", error);
+                setErrorMessage("Nie udało się dodać kategorii.");
+            });
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -128,8 +154,22 @@ const UserEditExpense = () => {
                         </option>
                     ))}
                 </select>
+                <input
+                    type="text"
+                    placeholder="Dodaj nową kategorię"
+                    value={newCategory}
+                    onChange={(e) => setNewCategory(e.target.value)}
+                />
+                {successMessage && <p className="success-message">{successMessage}</p>}
+                <button
+                    type="button"
+                    className="btn-add-category"
+                    onClick={handleAddCategory}
+                >
+                    Dodaj kategorię
+                </button>
                 <button type="submit">Zapisz zmiany</button>
-                <button type="button" onClick={handleCancel}>
+                <button className="btn-cancel" onClick={handleCancel}>
                     Anuluj
                 </button>
             </form>
