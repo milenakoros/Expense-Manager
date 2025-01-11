@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ExpenseItem from "./UserExpenseItem";
-//import ExpenseItem from "../../expenses/ExpenseItem";
 
 const UserExpenseList = () => {
   const [expenses, setExpenses] = useState([]);

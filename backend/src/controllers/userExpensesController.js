@@ -1,14 +1,41 @@
-const pool = require('../db/db'); 
+const pool = require('../db/db');
 
 exports.getUserExpenses = async (req, res) => {
   try {
     const [rows] = await pool.query(
-      `SELECT * FROM expenses WHERE user_id = ?`,
-      [req.user.id]
+      `SELECT e.id, e.title, e.price, e.note, e.date, c.name AS category_name 
+       FROM expenses e
+       LEFT JOIN categories c ON e.category_id = c.id
+       WHERE e.user_id = ? AND c.user_id = ?`,
+      [req.user.id, req.user.id] 
     );
     res.json(rows);
   } catch (error) {
+    console.error('Error fetching user expenses:', error);
     res.status(500).json({ message: 'Nie udało się pobrać wydatków.' });
+  }
+};
+
+exports.getUserExpense = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const [rows] = await pool.query(
+      `SELECT e.id, e.title, e.price, e.note, e.date, c.name AS category_name, c.id AS category_id 
+       FROM expenses e
+       LEFT JOIN categories c ON e.category_id = c.id
+       WHERE e.id = ? AND e.user_id = ?`,
+      [id, req.user.id]
+    );
+
+    if (!rows.length) {
+      return res.status(404).json({ message: 'Wydatek nie znaleziony.' });
+    }
+
+    res.json(rows[0]);
+  } catch (error) {
+    console.error('Error fetching user expense:', error);
+    res.status(500).json({ message: 'Nie udało się pobrać wydatku.' });
   }
 };
 
@@ -20,39 +47,77 @@ exports.addUserExpense = async (req, res) => {
   }
 
   try {
+    const [category] = await pool.query(
+      `SELECT id FROM categories WHERE id = ? AND user_id = ?`,
+      [categoryId, req.user.id]
+    );
+
+    if (!category.length) {
+      return res.status(400).json({ message: 'Nieprawidłowa kategoria.' });
+    }
+
     const [result] = await pool.query(
       `INSERT INTO expenses (title, price, note, date, category_id, user_id) VALUES (?, ?, ?, ?, ?, ?)`,
       [title, price, note || null, date, categoryId, req.user.id]
     );
+
     res.status(201).json({ id: result.insertId, ...req.body });
   } catch (error) {
+    console.error('Error adding expense:', error);
     res.status(500).json({ message: 'Nie udało się dodać wydatku.' });
   }
 };
 
+
 exports.updateUserExpense = async (req, res) => {
   const { id } = req.params;
   const { title, price, note, date, categoryId } = req.body;
+
+  console.log("Aktualizowany wydatek ID:", id);
+  console.log("Dane z frontendu:", { title, price, note, date, categoryId });
+
+  if (!title || !price || !date || !categoryId) {
+    return res.status(400).json({ message: 'Wszystkie pola są wymagane.' });
+  }
 
   try {
     const [expense] = await pool.query(
       `SELECT * FROM expenses WHERE id = ? AND user_id = ?`,
       [id, req.user.id]
     );
+
+    console.log("Wydatek znaleziony:", expense);
+
     if (!expense.length) {
       return res.status(404).json({ message: 'Wydatek nie znaleziony.' });
     }
 
-    await pool.query(
-      `UPDATE expenses SET title = ?, price = ?, note = ?, date = ?, category_id = ? WHERE id = ? AND user_id = ?`,
+    const [category] = await pool.query(
+      `SELECT id FROM categories WHERE id = ? AND user_id = ?`,
+      [categoryId, req.user.id]
+    );
+
+    console.log("Kategoria znaleziona:", category);
+
+    if (!category.length) {
+      return res.status(400).json({ message: 'Nieprawidłowa kategoria.' });
+    }
+
+    const [result] = await pool.query(
+      `UPDATE expenses SET title = ?, price = ?, note = ?, date = ?, category_id = ? 
+       WHERE id = ? AND user_id = ?`,
       [title, price, note || null, date, categoryId, id, req.user.id]
     );
 
-    res.json({ message: 'Wydatek zaktualizowany.' });
+    console.log("Wynik aktualizacji:", result);
+
+    res.json({ message: 'Wydatek zaktualizowany pomyślnie.' });
   } catch (error) {
+    console.error('Error updating expense:', error);
     res.status(500).json({ message: 'Nie udało się zaktualizować wydatku.' });
   }
 };
+
 
 exports.deleteUserExpense = async (req, res) => {
   const { id } = req.params;
@@ -76,34 +141,33 @@ exports.deleteUserExpense = async (req, res) => {
   }
 };
 exports.getUserProfile = async (req, res) => {
-    try {
-      const [user] = await pool.query(
-        `SELECT id, username, email FROM users WHERE id = ?`,
-        [req.user.id]
-      );
-      if (!user.length) {
-        return res.status(404).json({ message: "Użytkownik nie znaleziony." });
-      }
-      res.json(user[0]);
-    } catch (error) {
-      res.status(500).json({ message: "Nie udało się pobrać danych użytkownika." });
+  try {
+    const [user] = await pool.query(
+      `SELECT id, username, email FROM users WHERE id = ?`,
+      [req.user.id]
+    );
+    if (!user.length) {
+      return res.status(404).json({ message: "Użytkownik nie znaleziony." });
     }
-  };
-  
-  exports.updateUserProfile = async (req, res) => {
-    const { username } = req.body;
-    if (!username) {
-      return res.status(400).json({ message: "Nazwa użytkownika jest wymagana." });
-    }
-  
-    try {
-      await pool.query(
-        `UPDATE users SET username = ? WHERE id = ?`,
-        [username, req.user.id]
-      );
-      res.json({ message: "Profil zaktualizowany pomyślnie." });
-    } catch (error) {
-      res.status(500).json({ message: "Nie udało się zaktualizować profilu." });
-    }
-  };
-  
+    res.json(user[0]);
+  } catch (error) {
+    res.status(500).json({ message: "Nie udało się pobrać danych użytkownika." });
+  }
+};
+
+exports.updateUserProfile = async (req, res) => {
+  const { username } = req.body;
+  if (!username) {
+    return res.status(400).json({ message: "Nazwa użytkownika jest wymagana." });
+  }
+
+  try {
+    await pool.query(
+      `UPDATE users SET username = ? WHERE id = ?`,
+      [username, req.user.id]
+    );
+    res.json({ message: "Profil zaktualizowany pomyślnie." });
+  } catch (error) {
+    res.status(500).json({ message: "Nie udało się zaktualizować profilu." });
+  }
+};

@@ -13,16 +13,29 @@ const UserEditExpense = () => {
     const [date, setDate] = useState(new Date());
     const [categoryId, setCategoryId] = useState("");
     const [categories, setCategories] = useState([]);
+    const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
+        console.log("ID wydatku:", id);
         axios
-            .get("http://localhost:5000/api/user/categories")
-            .then((response) => setCategories(response.data))
-            .catch(() => alert("Nie udało się pobrać kategorii."));
+            .get("http://localhost:5000/api/user/categories", {
+                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+            })
+            .then((response) => {
+                console.log("Kategorie:", response.data);
+                setCategories(response.data);
+            })
+            .catch((error) => {
+                console.error("Błąd podczas pobierania kategorii:", error);
+                setErrorMessage("Nie udało się pobrać kategorii.");
+            });
 
         axios
-            .get(`http://localhost:5000/api/user/expenses/${id}`)
+            .get(`http://localhost:5000/api/user/expenses/${id}`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+            })
             .then((response) => {
+                console.log("Szczegóły wydatku:", response.data);
                 const { title, note, price, date, categoryId } = response.data;
                 setTitle(title);
                 setNote(note);
@@ -30,7 +43,10 @@ const UserEditExpense = () => {
                 setDate(new Date(date));
                 setCategoryId(categoryId);
             })
-            .catch(() => alert("Nie udało się pobrać danych wydatku."));
+            .catch((error) => {
+                console.error("Błąd podczas pobierania danych wydatku:", error.response);
+                setErrorMessage("Nie udało się pobrać danych wydatku.");
+            });
     }, [id]);
 
     const handleSubmit = (e) => {
@@ -42,13 +58,21 @@ const UserEditExpense = () => {
             date: date.toISOString().split("T")[0],
             categoryId,
         };
+        console.log("Dane wysyłane do API:", updatedExpense);
+
         axios
-            .put(`http://localhost:5000/api/user/expenses/${id}`, updatedExpense)
-            .then(() => {
+            .put(`http://localhost:5000/api/user/expenses/${id}`, updatedExpense, {
+                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+            })
+            .then((response) => {
+                console.log("Odpowiedź z backendu:", response.data);
                 alert("Wydatek zaktualizowany pomyślnie!");
                 navigate("/user/expenses");
             })
-            .catch(() => alert("Nie udało się zaktualizować wydatku."));
+            .catch((error) => {
+                console.error("Błąd podczas aktualizacji wydatku:", error.response);
+                alert("Nie udało się zaktualizować wydatku.");
+            });
     };
 
     const handleCancel = () => {
@@ -60,6 +84,7 @@ const UserEditExpense = () => {
     return (
         <div>
             <h1>Edytuj Wydatek</h1>
+            {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
             <form onSubmit={handleSubmit}>
                 <label htmlFor="title">Tytuł:</label>
                 <input

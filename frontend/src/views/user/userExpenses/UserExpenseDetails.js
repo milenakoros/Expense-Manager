@@ -8,13 +8,24 @@ const UserExpenseDetails = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/api/user/expenses/${id}`)
-            .then((response) => response.json())
+        fetch(`http://localhost:5000/api/user/expenses/${id}`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Błąd podczas pobierania szczegółów wydatku");
+                }
+                return response.json();
+            })
             .then((data) => {
                 setExpense(data);
                 setLoading(false);
             })
-            .catch(() => {
+            .catch((error) => {
+                console.error(error);
                 setError("Nie udało się pobrać szczegółów wydatku.");
                 setLoading(false);
             });
