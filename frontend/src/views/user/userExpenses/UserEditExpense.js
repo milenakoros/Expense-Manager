@@ -18,7 +18,6 @@ const UserEditExpense = () => {
     const [successMessage, setSuccessMessage] = useState("");
 
     useEffect(() => {
-        console.log("ID wydatku:", id);
         axios
             .get("http://localhost:5000/api/user/categories", {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -82,14 +81,12 @@ const UserEditExpense = () => {
             date: date.toISOString().split("T")[0],
             categoryId,
         };
-        console.log("Dane wysyłane do API:", updatedExpense);
 
         axios
             .put(`http://localhost:5000/api/user/expenses/${id}`, updatedExpense, {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
             })
             .then((response) => {
-                console.log("Odpowiedź z backendu:", response.data);
                 alert("Wydatek zaktualizowany pomyślnie!");
                 navigate("/user/expenses");
             })

@@ -73,9 +73,6 @@ exports.updateUserExpense = async (req, res) => {
   const { id } = req.params;
   const { title, price, note, date, categoryId } = req.body;
 
-  console.log("Aktualizowany wydatek ID:", id);
-  console.log("Dane z frontendu:", { title, price, note, date, categoryId });
-
   if (!title || !price || !date || !categoryId) {
     return res.status(400).json({ message: 'Wszystkie pola są wymagane.' });
   }
@@ -86,8 +83,6 @@ exports.updateUserExpense = async (req, res) => {
       [id, req.user.id]
     );
 
-    console.log("Wydatek znaleziony:", expense);
-
     if (!expense.length) {
       return res.status(404).json({ message: 'Wydatek nie znaleziony.' });
     }
@@ -96,8 +91,6 @@ exports.updateUserExpense = async (req, res) => {
       `SELECT id FROM categories WHERE id = ? AND user_id = ?`,
       [categoryId, req.user.id]
     );
-
-    console.log("Kategoria znaleziona:", category);
 
     if (!category.length) {
       return res.status(400).json({ message: 'Nieprawidłowa kategoria.' });
@@ -108,8 +101,6 @@ exports.updateUserExpense = async (req, res) => {
        WHERE id = ? AND user_id = ?`,
       [title, price, note || null, date, categoryId, id, req.user.id]
     );
-
-    console.log("Wynik aktualizacji:", result);
 
     res.json({ message: 'Wydatek zaktualizowany pomyślnie.' });
   } catch (error) {

@@ -100,10 +100,6 @@ exports.reassignExpenses = async (req, res) => {
   const oldCategoryId = req.params.id;
   const { newCategoryId } = req.body;
 
-  console.log("Rozpoczęcie przenoszenia wydatków...");
-  console.log("Stara kategoria ID:", oldCategoryId);
-  console.log("Nowa kategoria ID:", newCategoryId);
-
   if (!newCategoryId) {
     return res.status(400).json({ message: "Nowa kategoria jest wymagana." });
   }
