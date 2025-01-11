@@ -14,7 +14,7 @@ const Login = () => {
     try {
       const response = await axios.post('http://localhost:5000/auth/login', formData);
       localStorage.setItem('token', response.data.token);
-      navigate('/user');
+      navigate('/user/expenses');
     } catch (error) {
       setErrorMessage(
         error.response?.data?.message || 'Nieprawidłowy adres e-mail lub hasło.'
