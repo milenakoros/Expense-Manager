@@ -20,6 +20,20 @@ const UserExpenseList = () => {
       });
   }, []);
 
+  const handleDelete = (id) => {
+    axios
+      .delete(`http://localhost:5000/api/user/expenses/${id}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
+      .then(() => {
+        setExpenses(expenses.filter((expense) => expense.id !== id));
+      })
+      .catch((error) => {
+        console.error("Błąd podczas usuwania wydatku:", error);
+        alert("Nie udało się usunąć wydatku.");
+      });
+  };
+
   if (error) {
     return <p>Błąd podczas pobierania wydatków.</p>;
   }
@@ -32,7 +46,7 @@ const UserExpenseList = () => {
     <div>
       <h1>Twoje Wydatki</h1>
       {expenses.map((expense) => (
-        <ExpenseItem key={expense.id} expense={expense} />
+        <ExpenseItem key={expense.id} expense={expense} onDelete={handleDelete} />
       ))}
     </div>
   );
