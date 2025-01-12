@@ -10,6 +10,7 @@ import Login from './views/auth/Login';
 import Home from "./views/homeDashboard/Home";
 import AdminDashboard from "./views/admin/adminDashboard/AdminDashboard";
 import Articles from "./views/homeDashboard/Articles/Articles";
+import AddArticle from "./views/homeDashboard/Articles/AddArticle";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/user/*" element={<UserDashboard />} />
         <Route path="/admin/*" element={<AdminDashboard />} />
+        <Route path="/add-article" element={<AddArticle />} />
 
         <Route path="/expenses/:id" element={<ExpenseDetails />} />
         <Route path="/add" element={<AddExpense />} />

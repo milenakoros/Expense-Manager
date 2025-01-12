@@ -78,3 +78,23 @@
 .back-to-home:hover {
     background-color: #0056b3;
 }
+
+.add-article {
+    display: block;
+    margin: 20px auto;
+    background-color: #539b0f;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.add-article:hover {
+    background-color: #0a7a10;
+}

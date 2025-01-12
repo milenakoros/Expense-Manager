@@ -237,3 +237,52 @@ tbody tr:last-child td {
 .list-container .btn-delete:hover {
     background-color: #c82333;
 }
+
+.admin-articles-container {
+    margin: 20px;
+}
+
+.admin-articles-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.admin-articles-table th,
+.admin-articles-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.admin-articles-table th {
+    background-color: #223992;
+}
+
+.admin-articles-container h1 {
+    color: #6a1eb6;
+}
+
+.btn-edit {
+    background-color: #4caf50;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-delete {
+    background-color: #f44336;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.btn-edit:hover,
+.btn-delete:hover {
+    opacity: 0.8;
+}
