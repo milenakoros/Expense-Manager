@@ -75,7 +75,7 @@ exports.getUserExpenses = async (req, res) => {
     try {
         const [expenses] = await pool.query(
             `SELECT 
-                e.id AS expense_id, 
+                e.id, 
                 e.date,
                 e.title, 
                 e.price, 

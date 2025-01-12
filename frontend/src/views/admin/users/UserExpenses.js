@@ -41,7 +41,9 @@ const UserExpenses = () => {
                         setExpenses(expenses.filter((expense) => expense.id !== expenseId));
                         Swal.fire("Usunięto!", "Wydatek został usunięty.", "success");
                     })
-                    .catch(() => Swal.fire("Błąd", "Nie udało się usunąć wydatku.", "error"));
+                    .catch((error) => {
+                        Swal.fire("Błąd", "Nie udało się usunąć wydatku.", "error");
+                    });
             }
         });
     };
