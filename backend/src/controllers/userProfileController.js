@@ -21,11 +21,7 @@ exports.changePassword = async (req, res) => {
             return res.status(400).json({ message: "Podane aktualne hasło jest nieprawidłowe." });
         }
 
-        console.log("Nowe hasło (przed hashowaniem):", newPassword);
-
         const hashedPassword = await bcrypt.hash(newPassword, 10);
-
-        console.log("Nowe hasło (zaszyfrowane):", hashedPassword);
 
         await pool.query("UPDATE users SET password = ? WHERE id = ?", [hashedPassword, req.user.id]);
 

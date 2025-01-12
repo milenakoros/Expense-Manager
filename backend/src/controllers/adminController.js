@@ -96,6 +96,26 @@ exports.getUserExpenses = async (req, res) => {
     }
 };
 
+exports.getUserExpense = async (req, res) => {
+    const { userId, expenseId } = req.params;
+
+    try {
+        const [expense] = await pool.query(
+            "SELECT * FROM expenses WHERE id = ? AND user_id = ?",
+            [expenseId, userId]
+        );
+
+        if (!expense.length) {
+            return res.status(404).json({ message: "Wydatek nie został znaleziony." });
+        }
+
+        res.json(expense[0]);
+    } catch (error) {
+        console.error("Błąd podczas pobierania wydatku:", error);
+        res.status(500).json({ message: "Nie udało się pobrać wydatku." });
+    }
+};
+
 exports.updateUserExpense = async (req, res) => {
     const { expenseId } = req.params;
     const { title, price, note, date, category_id } = req.body;
@@ -105,10 +125,10 @@ exports.updateUserExpense = async (req, res) => {
             "UPDATE expenses SET title = ?, price = ?, note = ?, date = ?, category_id = ? WHERE id = ?",
             [title, price, note, date, category_id, expenseId]
         );
-        res.json({ message: "Wydatek użytkownika zaktualizowany pomyślnie." });
+        res.json({ message: "Wydatek zaktualizowany pomyślnie." });
     } catch (error) {
-        console.error("Błąd podczas aktualizacji wydatku użytkownika:", error);
-        res.status(500).json({ message: "Nie udało się zaktualizować wydatku użytkownika." });
+        console.error("Błąd podczas aktualizacji wydatku:", error);
+        res.status(500).json({ message: "Nie udało się zaktualizować wydatku." });
     }
 };
 
@@ -164,37 +184,5 @@ exports.deleteUserCategory = async (req, res) => {
     } catch (error) {
         console.error("Błąd podczas usuwania kategorii użytkownika:", error);
         res.status(500).json({ message: "Nie udało się usunąć kategorii użytkownika." });
-    }
-};
-
-exports.adminUpdateExpense = async (req, res) => {
-    const { expenseId } = req.params;
-    const { title, price, note, date, category_id } = req.body;
-
-    try {
-        await pool.query(
-            "UPDATE expenses SET title = ?, price = ?, note = ?, date = ?, category_id = ? WHERE id = ?",
-            [title, price, note, date, category_id, expenseId]
-        );
-        res.json({ message: "Wydatek zaktualizowany pomyślnie." });
-    } catch (error) {
-        console.error("Błąd podczas aktualizacji wydatku:", error);
-        res.status(500).json({ message: "Nie udało się zaktualizować wydatku." });
-    }
-};
-
-exports.adminUpdateCategory = async (req, res) => {
-    const { categoryId } = req.params;
-    const { name, description } = req.body;
-
-    try {
-        await pool.query(
-            "UPDATE categories SET name = ?, description = ? WHERE id = ?",
-            [name, description, categoryId]
-        );
-        res.json({ message: "Kategoria zaktualizowana pomyślnie." });
-    } catch (error) {
-        console.error("Błąd podczas aktualizacji kategorii:", error);
-        res.status(500).json({ message: "Nie udało się zaktualizować kategorii." });
     }
 };

@@ -14,7 +14,6 @@ const UserExpenses = () => {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
             })
             .then((response) => {
-                console.log(response.data);
                 setExpenses(response.data)
             })
             .catch(() => console.error("Nie udało się pobrać wydatków."));
