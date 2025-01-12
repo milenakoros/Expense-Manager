@@ -46,20 +46,27 @@ const UserCategories = () => {
   return (
     <div className="list-container">
       <h1>Kategorie użytkownika</h1>
-      <ul>
-        {categories.map((category) => (
-          <li key={category.id}>
-            <div className="category-info">
-              <strong>{category.name}</strong>
-              <span>{category.description || "Brak opisu"}</span>
-            </div>
-            <div className="action-buttons">
-              <button className="btn-edit" onClick={() => handleEdit(category.id)}>Edytuj</button>
-              <button className="btn-delete" onClick={() => handleDelete(category.id)}>Usuń</button>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <table>
+        <thead>
+          <tr>
+            <th>Nazwa</th>
+            <th>Opis</th>
+            <th>Akcje</th>
+          </tr>
+        </thead>
+        <tbody>
+          {categories.map((category) => (
+            <tr key={category.id}>
+              <td>{category.name}</td>
+              <td>{category.description || "Brak opisu"}</td>
+              <td className="action-buttons">
+                <button className="btn-edit" onClick={() => handleEdit(category.id)}>Edytuj</button>
+                <button className="btn-delete" onClick={() => handleDelete(category.id)}>Usuń</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

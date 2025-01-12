@@ -7,6 +7,7 @@ import "../../../styles/Admin.css";
 import UserExpenses from "../users/UserExpenses";
 import UserCategories from "../users/UserCategories";
 import AdminEditUserExpense from "../users/AdminEditUserExpense";
+import AdminEditUserCategory from "../users/AdminEditUserCategory";
 
 const AdminDashboard = () => {
   return (
@@ -18,7 +19,7 @@ const AdminDashboard = () => {
         <Route path="/users/:id/expenses" element={<UserExpenses />} />
         <Route path="/users/:id/categories" element={<UserCategories />} />
         <Route path="/users/:userId/expenses/:expenseId/edit" element={<AdminEditUserExpense />} />
-        {/* <Route path="/users/:id/categories/:categoryId/edit" element={<UserEditCategory />} /> */}
+        <Route path="/users/:userId/categories/:categoryId/edit" element={<AdminEditUserCategory />} />
       </Routes>
     </div>
   );

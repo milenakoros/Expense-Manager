@@ -159,15 +159,48 @@ exports.getUserCategories = async (req, res) => {
     }
 };
 
-exports.updateUserCategory = async (req, res) => {
-    const { categoryId } = req.params;
-    const { name, description } = req.body;
+exports.getUserCategory = async (req, res) => {
+    const { userId, categoryId } = req.params;
 
     try {
-        await pool.query(
+        const [category] = await pool.query(
+            "SELECT * FROM categories WHERE id = ? AND user_id = ?",
+            [categoryId, userId]
+        );
+
+        if (category.length === 0) {
+            return res.status(404).json({ message: "Kategoria nie została znaleziona." });
+        }
+
+        res.json(category[0]);
+    } catch (error) {
+        console.error("Błąd podczas pobierania kategorii:", error);
+        res.status(500).json({ message: "Nie udało się pobrać kategorii." });
+    }
+};
+
+exports.updateUserCategory = async (req, res) => {
+    const { name, description } = req.body;
+    const { categoryId } = req.params;
+
+    console.log("Dane wejściowe:", { name, description, categoryId });
+
+    if (!categoryId || !name) {
+        return res.status(400).json({ message: "Brak wymaganych danych: categoryId lub name." });
+    }
+
+    try {
+        const [result] = await pool.query(
             "UPDATE categories SET name = ?, description = ? WHERE id = ?",
             [name, description, categoryId]
         );
+
+        console.log("Liczba zaktualizowanych wierszy:", result.affectedRows);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "Nie znaleziono kategorii do aktualizacji." });
+        }
+
         res.json({ message: "Kategoria użytkownika zaktualizowana pomyślnie." });
     } catch (error) {
         console.error("Błąd podczas aktualizacji kategorii użytkownika:", error);
