@@ -34,9 +34,7 @@ const AddArticle = () => {
                     title: "Sukces",
                     text: "Artykuł został dodany pomyślnie!",
                     confirmButtonText: "OK",
-                }).then(() => {
-                    navigate("/articles");
-                });
+                }).then(() => navigate("/articles"));
             })
             .catch(() => {
                 Swal.fire({
@@ -48,9 +46,7 @@ const AddArticle = () => {
             });
     };
 
-    const handleCancel = () => {
-        navigate("/articles");
-    };
+    const handleCancel = () => navigate("/articles");
 
     return (
         <div className="add-article-container">
@@ -90,12 +86,14 @@ const AddArticle = () => {
                     onChange={(e) => setAuthor(e.target.value)}
                     required
                 />
-                <button type="submit" className="btn-submit">
-                    Dodaj Artykuł
-                </button>
-                <button type="button" className="btn-cancel" onClick={handleCancel}>
-                    Anuluj
-                </button>
+                <div className="form-buttons">
+                    <button type="submit" className="btn-submit">
+                        Dodaj Artykuł
+                    </button>
+                    <button type="button" className="btn-cancel" onClick={handleCancel}>
+                        Anuluj
+                    </button>
+                </div>
             </form>
         </div>
     );
