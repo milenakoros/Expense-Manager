@@ -1,0 +1,99 @@
+{
+    "witaj": "Welcome to the application",
+    "artykuły": {
+        "tytuł": "Articles",
+        "brakArtykułów": "No articles found.",
+        "czytajWięcej": "Read more"
+    },
+    "przyciski": {
+        "dodajArtykuł": "Add Article",
+        "powrótDoStronyGłównej": "Back to Home"
+    },
+    "stronaGlowna": "Home",
+    "artykuły": "Articles",
+    "profil": "Profile",
+    "wydatki": "Expenses",
+    "kategorie": "Categories",
+    "wyloguj": "Log out",
+    "wylogowano": "Logged out",
+    "wylogowanoTekst": "You have been successfully logged out!",
+    "ok": "OK",
+    "dodajWydatek": {
+        "tytuł": "Add Expense",
+        "tytułWydatku": "Title:",
+        "wpiszTytuł": "Enter expense title",
+        "opis": "Description:",
+        "wpiszOpis": "Add a description for the expense",
+        "cena": "Price:",
+        "wpiszCenę": "Enter expense price",
+        "data": "Date:",
+        "kategoria": "Category:",
+        "wybierzKategorię": "Select a category",
+        "dodajNowąKategorię": "Add a new category",
+        "dodajKategorię": "Add Category",
+        "dodajWydatek": "Add Expense"
+    },
+    "anuluj": {
+        "przycisk": "Cancel",
+        "tytuł": "Are you sure you want to cancel?",
+        "treść": "Any unsaved changes will be lost.",
+        "potwierdź": "Yes, cancel",
+        "anuluj": "No, go back"
+    },
+    "błąd": {
+        "pobieranieKategorii": "Error fetching categories:",
+        "niePobranoKategorii": "Failed to fetch categories.",
+        "dodawanieKategorii": "Error adding category:",
+        "nieDodanoKategorii": "Failed to add category.",
+        "dodawanieWydatku": "Error adding expense:",
+        "nieDodanoWydatku": "Failed to add expense.",
+        "wszystkiePolaWymagane": "All fields are required!"
+    },
+    "sukces": {
+        "dodanoKategorie": "Category added successfully.",
+        "dodanoWydatek": "Expense added successfully!"
+    },
+    "profil": {
+        "tytuł": "Your Profile",
+        "nazwaUżytkownika": "Username",
+        "adresEmail": "Email Address",
+        "aktualizuj": "Update",
+        "zmieńHasło": "Change Password",
+        "błąd": {
+            "tytuł": "Error",
+            "treść": "Failed to load user profile."
+        },
+        "hasło": {
+            "aktualne": {
+                "tytuł": "Enter Current Password",
+                "etkieta": "Current Password",
+                "podpowiedź": "Enter your current password"
+            },
+            "nowe": {
+                "tytuł": "Enter New Password",
+                "podpowiedź": "New Password"
+            },
+            "potwierdź": {
+                "podpowiedź": "Confirm New Password"
+            },
+            "wymagania": "The password must include: at least 8 characters, an uppercase and lowercase letter, a number, and a special character.",
+            "nieprawidłowe": "The entered password is incorrect.",
+            "zmianaSukces": "Password successfully changed.",
+            "zmianaBłąd": "Failed to change the password."
+        },
+        "sukces": {
+            "tytuł": "Success"
+        },
+        "aktualizacjaSukces": "Data updated successfully!",
+        "aktualizacjaBłąd": "Failed to update user data.",
+        "walidacja": {
+            "wymaganePola": "All fields are required.",
+            "wymaganiaHasła": "The password must have at least 8 characters, include an uppercase and lowercase letter, a number, and a special character.",
+            "hasłaNiePasują": "Passwords must match."
+        }
+    },
+    "przyciski": {
+        "zatwierdź": "Confirm",
+        "anuluj": "Cancel"
+    }
+}

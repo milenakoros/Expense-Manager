@@ -1,0 +1,100 @@
+{
+    "witaj": "Witamy w aplikacji",
+    "artykuły": {
+        "tytuł": "Artykuły",
+        "brakArtykułów": "Nie znaleziono artykułów.",
+        "czytajWięcej": "Czytaj więcej"
+    },
+    "przyciski": {
+        "dodajArtykuł": "Dodaj Artykuł",
+        "powrótDoStronyGłównej": "Powrót na stronę główną"
+    },
+    "stronaGlowna": "Strona główna",
+    "artykuły": "Artykuły",
+    "profil": "Profil",
+    "wydatki": "Wydatki",
+    "dodajWydatek": "Dodaj Wydatek",
+    "kategorie": "Kategorie",
+    "wyloguj": "Wyloguj się",
+    "wylogowano": "Wylogowano",
+    "wylogowanoTekst": "Zostałeś pomyślnie wylogowany!",
+    "ok": "OK",
+    "dodajWydatek": {
+        "tytuł": "Dodaj Wydatek",
+        "tytułWydatku": "Tytuł:",
+        "wpiszTytuł": "Wpisz tytuł wydatku",
+        "opis": "Opis:",
+        "wpiszOpis": "Dodaj opis wydatku",
+        "cena": "Cena:",
+        "wpiszCenę": "Podaj cenę wydatku",
+        "data": "Data:",
+        "kategoria": "Kategoria:",
+        "wybierzKategorię": "Wybierz kategorię",
+        "dodajNowąKategorię": "Dodaj nową kategorię",
+        "dodajKategorię": "Dodaj kategorię",
+        "dodajWydatek": "Dodaj Wydatek"
+    },
+    "anuluj": {
+        "przycisk": "Anuluj",
+        "tytuł": "Czy na pewno chcesz anulować?",
+        "treść": "Wszelkie niezapisane zmiany zostaną utracone.",
+        "potwierdź": "Tak, anuluj",
+        "anuluj": "Nie, wróć"
+    },
+    "błąd": {
+        "pobieranieKategorii": "Błąd podczas pobierania kategorii:",
+        "niePobranoKategorii": "Nie udało się pobrać kategorii.",
+        "dodawanieKategorii": "Błąd podczas dodawania kategorii:",
+        "nieDodanoKategorii": "Nie udało się dodać kategorii.",
+        "dodawanieWydatku": "Błąd podczas dodawania wydatku:",
+        "nieDodanoWydatku": "Nie udało się dodać wydatku.",
+        "wszystkiePolaWymagane": "Wszystkie pola są wymagane!"
+    },
+    "sukces": {
+        "dodanoKategorie": "Kategoria została dodana.",
+        "dodanoWydatek": "Wydatek dodany pomyślnie!"
+    },
+    "profil": {
+    "tytuł": "Twój Profil",
+    "nazwaUżytkownika": "Nazwa użytkownika",
+    "adresEmail": "Adres e-mail",
+    "aktualizuj": "Zaktualizuj",
+    "zmieńHasło": "Zmień Hasło",
+    "błąd": {
+      "tytuł": "Błąd",
+      "treść": "Nie udało się załadować profilu użytkownika."
+    },
+    "hasło": {
+      "aktualne": {
+        "tytuł": "Podaj aktualne hasło",
+        "etkieta": "Aktualne hasło",
+        "podpowiedź": "Wpisz swoje aktualne hasło"
+      },
+      "nowe": {
+        "tytuł": "Podaj nowe hasło",
+        "podpowiedź": "Nowe hasło"
+      },
+      "potwierdź": {
+        "podpowiedź": "Potwierdź nowe hasło"
+      },
+      "wymagania": "Hasło musi zawierać: co najmniej 8 znaków, dużą i małą literę, cyfrę oraz znak specjalny.",
+      "nieprawidłowe": "Podane hasło jest nieprawidłowe.",
+      "zmianaSukces": "Hasło zostało pomyślnie zmienione.",
+      "zmianaBłąd": "Nie udało się zmienić hasła."
+    },
+    "sukces": {
+      "tytuł": "Sukces"
+    },
+    "aktualizacjaSukces": "Dane zaktualizowane pomyślnie!",
+    "aktualizacjaBłąd": "Nie udało się zaktualizować danych użytkownika.",
+    "walidacja": {
+      "wymaganePola": "Wszystkie pola są wymagane.",
+      "wymaganiaHasła": "Hasło musi mieć co najmniej 8 znaków, zawierać dużą i małą literę, cyfrę oraz znak specjalny.",
+      "hasłaNiePasują": "Hasła muszą być takie same."
+    }
+  },
+  "przyciski": {
+    "zatwierdź": "Zatwierdź",
+    "anuluj": "Anuluj"
+  }
+}

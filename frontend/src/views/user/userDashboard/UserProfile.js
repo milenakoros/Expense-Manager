@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useTranslation } from "react-i18next";
 
 const UserProfile = () => {
+    const { t } = useTranslation();
     const [user, setUser] = useState({ username: "", email: "" });
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -20,24 +22,24 @@ const UserProfile = () => {
             .catch(() =>
                 Swal.fire({
                     icon: "error",
-                    title: "Błąd",
-                    text: "Nie udało się załadować profilu użytkownika.",
+                    title: t("profil.błąd.tytuł"),
+                    text: t("profil.błąd.treść"),
                 })
             );
-    }, []);
+    }, [t]);
 
     const handlePasswordChange = async (e) => {
         e.preventDefault();
 
         const { value: currentPassword } = await Swal.fire({
-            title: "Podaj aktualne hasło",
+            title: t("profil.hasło.aktualne.tytuł"),
             input: "password",
-            inputLabel: "Aktualne hasło",
-            inputPlaceholder: "Wpisz swoje aktualne hasło",
+            inputLabel: t("profil.hasło.aktualne.etkieta"),
+            inputPlaceholder: t("profil.hasło.aktualne.podpowiedź"),
             inputAttributes: { autocapitalize: "off" },
             showCancelButton: true,
-            confirmButtonText: "Dalej",
-            cancelButtonText: "Anuluj",
+            confirmButtonText: t("przyciski.zatwierdź"),
+            cancelButtonText: t("przyciski.anuluj"),
         });
 
         if (!currentPassword) return;
@@ -51,22 +53,28 @@ const UserProfile = () => {
         } catch (error) {
             Swal.fire({
                 icon: "error",
-                title: "Błąd",
-                text: error.response?.data?.message || "Podane hasło jest nieprawidłowe.",
+                title: t("profil.błąd.tytuł"),
+                text: t("profil.hasło.nieprawidłowe"),
             });
             return;
         }
 
         const { value: formValues } = await Swal.fire({
-            title: "Podaj nowe hasło",
+            title: t("profil.hasło.nowe.tytuł"),
             html:
-                '<input id="swal-input1" class="swal2-input" type="password" placeholder="Nowe hasło">' +
-                '<input id="swal-input2" class="swal2-input" type="password" placeholder="Potwierdź nowe hasło">' +
-                '<p style="font-size: 0.9em; margin-top: 10px; color: gray;">Hasło musi zawierać: co najmniej 8 znaków, dużą i małą literę, cyfrę oraz znak specjalny.</p>',
+                `<input id="swal-input1" class="swal2-input" type="password" placeholder="${t(
+                    "profil.hasło.nowe.podpowiedź"
+                )}">` +
+                `<input id="swal-input2" class="swal2-input" type="password" placeholder="${t(
+                    "profil.hasło.potwierdź.podpowiedź"
+                )}">` +
+                `<p style="font-size: 0.9em; margin-top: 10px; color: gray;">${t(
+                    "profil.hasło.wymagania"
+                )}</p>`,
             focusConfirm: false,
             showCancelButton: true,
-            confirmButtonText: "Zmień hasło",
-            cancelButtonText: "Anuluj",
+            confirmButtonText: t("przyciski.zatwierdź"),
+            cancelButtonText: t("przyciski.anuluj"),
             preConfirm: () => {
                 const newPassword = document.getElementById("swal-input1").value;
                 const confirmPassword = document.getElementById("swal-input2").value;
@@ -75,13 +83,11 @@ const UserProfile = () => {
                     /^(?=.*\p{Ll})(?=.*\p{Lu})(?=.*\d)(?=.*[@$!%*?&]).{8,}$/u;
 
                 if (!newPassword || !confirmPassword) {
-                    Swal.showValidationMessage("Wszystkie pola są wymagane.");
+                    Swal.showValidationMessage(t("profil.walidacja.wymaganePola"));
                 } else if (!passwordRegex.test(newPassword)) {
-                    Swal.showValidationMessage(
-                        "Hasło musi mieć co najmniej 8 znaków, zawierać dużą i małą literę, cyfrę oraz znak specjalny."
-                    );
+                    Swal.showValidationMessage(t("profil.walidacja.wymaganiaHasła"));
                 } else if (newPassword !== confirmPassword) {
-                    Swal.showValidationMessage("Hasła muszą być takie same.");
+                    Swal.showValidationMessage(t("profil.walidacja.hasłaNiePasują"));
                 }
                 return { newPassword, confirmPassword };
             },
@@ -100,14 +106,14 @@ const UserProfile = () => {
             );
             Swal.fire({
                 icon: "success",
-                title: "Sukces",
-                text: "Hasło zostało pomyślnie zmienione.",
+                title: t("profil.sukces.tytuł"),
+                text: t("profil.hasło.zmianaSukces"),
             });
         } catch (error) {
             Swal.fire({
                 icon: "error",
-                title: "Błąd",
-                text: error.response?.data?.message || "Nie udało się zmienić hasła.",
+                title: t("profil.błąd.tytuł"),
+                text: t("profil.hasło.zmianaBłąd"),
             });
         }
     };
@@ -123,24 +129,24 @@ const UserProfile = () => {
             .then(() =>
                 Swal.fire({
                     icon: "success",
-                    title: "Sukces",
-                    text: "Dane zaktualizowane pomyślnie!",
+                    title: t("profil.sukces.tytuł"),
+                    text: t("profil.aktualizacjaSukces"),
                 })
             )
             .catch(() =>
                 Swal.fire({
                     icon: "error",
-                    title: "Błąd",
-                    text: "Nie udało się zaktualizować danych użytkownika.",
+                    title: t("profil.błąd.tytuł"),
+                    text: t("profil.aktualizacjaBłąd"),
                 })
             );
     };
 
     return (
         <div>
-            <h1>Twój Profil</h1>
+            <h1>{t("profil.tytuł")}</h1>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="username">Nazwa użytkownika:</label>
+                <label htmlFor="username">{t("profil.nazwaUżytkownika")}</label>
                 <input
                     type="text"
                     id="username"
@@ -148,7 +154,7 @@ const UserProfile = () => {
                     onChange={(e) => setUsername(e.target.value)}
                     required
                 />
-                <label htmlFor="email">Adres e-mail:</label>
+                <label htmlFor="email">{t("profil.adresEmail")}</label>
                 <input
                     type="email"
                     id="email"
@@ -156,13 +162,13 @@ const UserProfile = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     disabled
                 />
-                <button type="submit">Zaktualizuj</button>
+                <button type="submit">{t("profil.aktualizuj")}</button>
                 <button
                     type="button"
                     onClick={handlePasswordChange}
                     className="btn-change-password"
                 >
-                    Zmień Hasło
+                    {t("profil.zmieńHasło")}
                 </button>
             </form>
         </div>

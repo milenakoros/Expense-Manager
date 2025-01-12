@@ -3,10 +3,12 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import "../../../styles/User.css"
+import "../../../styles/User.css";
 import Swal from "sweetalert2";
+import { useTranslation } from "react-i18next";
 
 const UserAddExpense = () => {
+    const { t } = useTranslation();
     const [title, setTitle] = useState("");
     const [note, setNote] = useState("");
     const [price, setPrice] = useState("");
@@ -25,15 +27,15 @@ const UserAddExpense = () => {
             })
             .then((response) => setCategories(response.data))
             .catch((error) => {
-                console.error("Błąd podczas pobierania kategorii:", error);
-                setErrorMessage("Nie udało się pobrać kategorii.");
+                console.error(t("błąd.pobieranieKategorii"), error);
+                setErrorMessage(t("błąd.niePobranoKategorii"));
             });
     }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!title || !price || !categoryId) {
-            setErrorMessage("Wszystkie pola są wymagane!");
+            setErrorMessage(t("błąd.wszystkiePolaWymagane"));
             return;
         }
 
@@ -50,18 +52,18 @@ const UserAddExpense = () => {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
             })
             .then(() => {
-                setSuccessMessage("Wydatek dodany pomyślnie!");
+                setSuccessMessage(t("sukces.dodanoWydatek"));
                 navigate("/user/expenses");
             })
             .catch((error) => {
-                console.error("Błąd podczas dodawania wydatku:", error);
-                setErrorMessage("Nie udało się dodać wydatku.");
+                console.error(t("błąd.dodawanieWydatku"), error);
+                setErrorMessage(t("błąd.nieDodanoWydatku"));
             });
     };
 
     const handleAddCategory = () => {
         if (!newCategory) {
-            setErrorMessage("Nazwa kategorii jest wymagana!");
+            setErrorMessage(t("błąd.nazwaKategoriiWymagana"));
             return;
         }
 
@@ -75,22 +77,22 @@ const UserAddExpense = () => {
                 setCategories([...categories, response.data]);
                 setCategoryId(response.data.id);
                 setNewCategory("");
-                setSuccessMessage("Kategoria została dodana.");
+                setSuccessMessage(t("sukces.dodanoKategorie"));
             })
             .catch((error) => {
-                console.error("Błąd podczas dodawania kategorii:", error);
-                setErrorMessage("Nie udało się dodać kategorii.");
+                console.error(t("błąd.dodawanieKategorii"), error);
+                setErrorMessage(t("błąd.nieDodanoKategorii"));
             });
     };
 
     const handleCancel = () => {
         Swal.fire({
-            title: "Czy na pewno chcesz anulować?",
-            text: "Wszelkie niezapisane zmiany zostaną utracone.",
+            title: t("anuluj.tytuł"),
+            text: t("anuluj.treść"),
             icon: "warning",
             showCancelButton: true,
-            confirmButtonText: "Tak, anuluj",
-            cancelButtonText: "Nie, wróć",
+            confirmButtonText: t("anuluj.potwierdź"),
+            cancelButtonText: t("anuluj.anuluj"),
         }).then((result) => {
             if (result.isConfirmed) {
                 navigate("/user/expenses");
@@ -100,50 +102,50 @@ const UserAddExpense = () => {
 
     return (
         <div>
-            <h1>Dodaj Wydatek</h1>
+            <h1>{t("dodajWydatek.tytuł")}</h1>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="title">Tytuł:</label>
+                <label htmlFor="title">{t("dodajWydatek.tytułWydatku")}</label>
                 <input
                     type="text"
                     id="title"
-                    placeholder="Wpisz tytuł wydatku"
+                    placeholder={t("dodajWydatek.wpiszTytuł")}
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     required
                 />
-                <label htmlFor="note">Opis:</label>
+                <label htmlFor="note">{t("dodajWydatek.opis")}</label>
                 <textarea
                     id="note"
-                    placeholder="Dodaj opis wydatku"
+                    placeholder={t("dodajWydatek.wpiszOpis")}
                     value={note}
                     onChange={(e) => setNote(e.target.value)}
                 ></textarea>
-                <label htmlFor="price">Cena:</label>
+                <label htmlFor="price">{t("dodajWydatek.cena")}</label>
                 <input
                     type="number"
                     id="price"
-                    placeholder="Podaj cenę wydatku"
+                    placeholder={t("dodajWydatek.wpiszCenę")}
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
                     step="0.01"
                     min="0"
                     required
                 />
-                <label htmlFor="date">Data:</label>
+                <label htmlFor="date">{t("dodajWydatek.data")}</label>
                 <DatePicker
                     selected={date}
                     onChange={(selectedDate) => setDate(selectedDate)}
                     dateFormat="yyyy-MM-dd"
                     required
                 />
-                <label htmlFor="category">Kategoria:</label>
+                <label htmlFor="category">{t("dodajWydatek.kategoria")}</label>
                 <select
                     id="category"
                     value={categoryId}
                     onChange={(e) => setCategoryId(e.target.value)}
                     required
                 >
-                    <option value="">Wybierz kategorię</option>
+                    <option value="">{t("dodajWydatek.wybierzKategorię")}</option>
                     {categories.map((category) => (
                         <option key={category.id} value={category.id}>
                             {category.name}
@@ -153,7 +155,7 @@ const UserAddExpense = () => {
                 <input
                     className="form-input-add-category"
                     type="text"
-                    placeholder="Dodaj nową kategorię"
+                    placeholder={t("dodajWydatek.dodajNowąKategorię")}
                     value={newCategory}
                     onChange={(e) => setNewCategory(e.target.value)}
                 />
@@ -162,15 +164,15 @@ const UserAddExpense = () => {
                     className="btn-add-category"
                     onClick={handleAddCategory}
                 >
-                    Dodaj kategorię
+                    {t("dodajWydatek.dodajKategorię")}
                 </button>
                 {errorMessage && <p className="error-message">{errorMessage}</p>}
                 {successMessage && <p className="success-message">{successMessage}</p>}
                 <button type="submit" className="btn-submit">
-                    Dodaj Wydatek
+                    {t("dodajWydatek.dodajWydatek")}
                 </button>
                 <button type="button" className="btn-cancel" onClick={handleCancel}>
-                    Anuluj
+                    {t("anuluj.przycisk")}
                 </button>
             </form>
         </div>

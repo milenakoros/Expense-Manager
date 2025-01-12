@@ -1,16 +1,20 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
+import LanguageSwitcher from "../../LanguageSwitcher";
+import "../../../i18n";
 
 const UserNav = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const handleLogout = () => {
         Swal.fire({
             icon: "success",
-            title: "Wylogowano",
-            text: "Zostałeś pomyślnie wylogowany!",
-            confirmButtonText: "OK",
+            title: t("wylogowano"),
+            text: t("wylogowanoTekst"),
+            confirmButtonText: t("ok"),
         }).then(() => {
             localStorage.removeItem("token");
             navigate("/login");
@@ -19,14 +23,14 @@ const UserNav = () => {
 
     return (
         <nav>
-            <Link to="/">Strona główna</Link>
-            <Link to="/user/articles">Artykuły</Link>
-            <Link to="/user/profile">Profil</Link>
-            <Link to="/user/expenses">Wydatki</Link>
-            <Link to="/user/expenses/add">Dodaj Wydatek</Link>
-            <Link to="/user/categories">Kategorie</Link>
+            <LanguageSwitcher />
+            <Link to="/user/articles">{t("artykuły")}</Link>
+            <Link to="/user/profile">{t("profil.tytuł")}</Link>
+            <Link to="/user/expenses">{t("wydatki")}</Link>
+            <Link to="/user/expenses/add">{t("dodajWydatek.tytuł")}</Link>
+            <Link to="/user/categories">{t("kategorie")}</Link>
             <button className="btn-logout" onClick={handleLogout}>
-                Wyloguj się
+                {t("wyloguj")}
             </button>
         </nav>
     );

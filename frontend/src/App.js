@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Register from './views/auth/Register';
 import UserDashboard from "./views/user/userDashboard/UserDashboard";
 import Login from './views/auth/Login';
@@ -7,6 +7,7 @@ import Home from "./views/homeDashboard/Home";
 import AdminDashboard from "./views/admin/adminDashboard/AdminDashboard";
 import Articles from "./views/homeDashboard/Articles/Articles";
 import AddArticle from "./views/homeDashboard/Articles/AddArticle";
+import "./i18n";
 
 const App = () => {
   return (
