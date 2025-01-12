@@ -9,12 +9,14 @@ import UserDashboard from "./views/user/userDashboard/UserDashboard";
 import Login from './views/auth/Login';
 import Home from "./views/homeDashboard/Home";
 import AdminDashboard from "./views/admin/adminDashboard/AdminDashboard";
+import Articles from "./views/homeDashboard/Articles/Articles";
 
 const App = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/articles" element={<Articles />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/user/*" element={<UserDashboard />} />
