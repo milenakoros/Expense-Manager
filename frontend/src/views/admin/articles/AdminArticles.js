@@ -6,21 +6,34 @@ import Swal from "sweetalert2";
 const AdminArticles = () => {
     const navigate = useNavigate();
     const [articles, setArticles] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
+    const fetchArticles = (page = 1) => {
+        setLoading(true);
         axios
-            .get("http://localhost:5000/articles", {
-                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+            .get(`http://localhost:5000/articles?page=${page}&limit=10`)
+            .then((response) => {
+                setArticles(response.data.articles);
+                setTotalPages(response.data.totalPages);
+                setCurrentPage(response.data.page);
+                setLoading(false);
             })
-            .then((response) => setArticles(response.data))
-            .catch(() => {
+            .catch((error) => {
+                console.error("Błąd podczas pobierania artykułów:", error);
                 Swal.fire({
                     icon: "error",
                     title: "Błąd",
                     text: "Nie udało się pobrać listy artykułów.",
                     confirmButtonText: "OK",
                 });
+                setLoading(false);
             });
+    };
+
+    useEffect(() => {
+        fetchArticles();
     }, []);
 
     const handleEdit = (id) => {
@@ -42,7 +55,7 @@ const AdminArticles = () => {
                         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
                     })
                     .then(() => {
-                        setArticles(articles.filter((article) => article.id !== id));
+                        fetchArticles(currentPage);
                         Swal.fire({
                             icon: "success",
                             title: "Usunięto!",
@@ -62,35 +75,76 @@ const AdminArticles = () => {
         });
     };
 
+    const goToNextPage = () => {
+        if (currentPage < totalPages) {
+            fetchArticles(currentPage + 1);
+        }
+    };
+
+    const goToPreviousPage = () => {
+        if (currentPage > 1) {
+            fetchArticles(currentPage - 1);
+        }
+    };
+
     return (
         <div className="admin-articles-container">
             <h1>Lista artykułów</h1>
-            {articles.length > 0 ? (
-                <table className="admin-articles-table">
-                    <thead>
-                        <tr>
-                            <th>Tytuł</th>
-                            <th>Autor</th>
-                            <th>Akcje</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {articles.map((article) => (
-                            <tr key={article.id}>
-                                <td>{article.title}</td>
-                                <td>{article.author}</td>
-                                <td>
-                                    <button className="btn-edit" onClick={() => handleEdit(article.id)}>
-                                        Edytuj
-                                    </button>
-                                    <button className="btn-delete" onClick={() => handleDelete(article.id)}>
-                                        Usuń
-                                    </button>
-                                </td>
+            {loading ? (
+                <p>Ładowanie artykułów...</p>
+            ) : articles.length > 0 ? (
+                <>
+                    <table className="admin-articles-table">
+                        <thead>
+                            <tr>
+                                <th>Tytuł</th>
+                                <th>Autor</th>
+                                <th>Akcje</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {articles.map((article) => (
+                                <tr key={article.id}>
+                                    <td>{article.title}</td>
+                                    <td>{article.author}</td>
+                                    <td>
+                                        <button
+                                            className="btn-edit"
+                                            onClick={() => handleEdit(article.id)}
+                                        >
+                                            Edytuj
+                                        </button>
+                                        <button
+                                            className="btn-delete"
+                                            onClick={() => handleDelete(article.id)}
+                                        >
+                                            Usuń
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    <div className="pagination">
+                        <button
+                            className="btn-prev"
+                            onClick={goToPreviousPage}
+                            disabled={currentPage === 1}
+                        >
+                            Poprzednia
+                        </button>
+                        <span>
+                            Strona {currentPage} z {totalPages}
+                        </span>
+                        <button
+                            className="btn-next"
+                            onClick={goToNextPage}
+                            disabled={currentPage === totalPages}
+                        >
+                            Następna
+                        </button>
+                    </div>
+                </>
             ) : (
                 <p>Brak artykułów do wyświetlenia.</p>
             )}
