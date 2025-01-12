@@ -16,4 +16,7 @@ router.get("/users/:id/categories", authMiddleware, adminMiddleware, adminContro
 router.put("/users/:id/categories/:categoryId", authMiddleware, adminMiddleware, adminController.updateUserCategory);
 router.delete("/users/:id/categories/:categoryId", authMiddleware, adminMiddleware, adminController.deleteUserCategory);
 
+router.put("/users/:userId/expenses/:expenseId", adminController.adminUpdateExpense);
+router.put("/users/:userId/categories/:categoryId", adminController.adminUpdateCategory);
+
 module.exports = router;

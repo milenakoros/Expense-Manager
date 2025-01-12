@@ -74,7 +74,19 @@ exports.getUserExpenses = async (req, res) => {
 
     try {
         const [expenses] = await pool.query(
-            "SELECT * FROM expenses WHERE user_id = ?",
+            `SELECT 
+                e.id AS expense_id, 
+                e.date,
+                e.title, 
+                e.price, 
+                e.category_id, 
+                c.name AS category_name
+            FROM 
+                expenses e
+            LEFT JOIN 
+                categories c ON e.category_id = c.id
+            WHERE 
+                e.user_id = ?;`,
             [id]
         );
         res.json(expenses);
@@ -152,5 +164,37 @@ exports.deleteUserCategory = async (req, res) => {
     } catch (error) {
         console.error("Błąd podczas usuwania kategorii użytkownika:", error);
         res.status(500).json({ message: "Nie udało się usunąć kategorii użytkownika." });
+    }
+};
+
+exports.adminUpdateExpense = async (req, res) => {
+    const { expenseId } = req.params;
+    const { title, price, note, date, category_id } = req.body;
+
+    try {
+        await pool.query(
+            "UPDATE expenses SET title = ?, price = ?, note = ?, date = ?, category_id = ? WHERE id = ?",
+            [title, price, note, date, category_id, expenseId]
+        );
+        res.json({ message: "Wydatek zaktualizowany pomyślnie." });
+    } catch (error) {
+        console.error("Błąd podczas aktualizacji wydatku:", error);
+        res.status(500).json({ message: "Nie udało się zaktualizować wydatku." });
+    }
+};
+
+exports.adminUpdateCategory = async (req, res) => {
+    const { categoryId } = req.params;
+    const { name, description } = req.body;
+
+    try {
+        await pool.query(
+            "UPDATE categories SET name = ?, description = ? WHERE id = ?",
+            [name, description, categoryId]
+        );
+        res.json({ message: "Kategoria zaktualizowana pomyślnie." });
+    } catch (error) {
+        console.error("Błąd podczas aktualizacji kategorii:", error);
+        res.status(500).json({ message: "Nie udało się zaktualizować kategorii." });
     }
 };
