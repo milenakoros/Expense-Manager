@@ -136,6 +136,7 @@ form button:active {
 .btn-edit {
   background-color: #007BFF;
   color: white;
+  font-size: 1em;
 }
 
 .btn-edit:hover {
