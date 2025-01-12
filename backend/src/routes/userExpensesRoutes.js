@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const authMiddleware = require('../middleware/authMiddleware');
+const { authMiddleware } = require('../middleware/authMiddleware');
 const userExpensesController = require('../controllers/userExpensesController');
+console.log("userExpensesController:", userExpensesController);
 
 router.get('/user/expenses', authMiddleware, userExpensesController.getUserExpenses);
 router.get('/user/expenses/:id', authMiddleware, userExpensesController.getUserExpense);
