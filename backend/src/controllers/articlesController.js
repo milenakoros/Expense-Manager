@@ -79,9 +79,25 @@ exports.deleteArticle = async (req, res) => {
 };
 
 exports.getArticles = async (req, res) => {
+    const { page = 1, limit = 10 } = req.query;
+
+    const offset = (page - 1) * limit;
+
     try {
-        const [articles] = await pool.query("SELECT * FROM articles ORDER BY created_at DESC");
-        res.json(articles);
+        const [articles] = await pool.query(
+            "SELECT * FROM articles ORDER BY date DESC LIMIT ? OFFSET ?",
+            [parseInt(limit), parseInt(offset)]
+        );
+
+        const [[{ total }]] = await pool.query("SELECT COUNT(*) as total FROM articles");
+
+        res.json({
+            articles,
+            total,
+            page: parseInt(page),
+            limit: parseInt(limit),
+            totalPages: Math.ceil(total / limit),
+        });
     } catch (error) {
         console.error("Błąd podczas pobierania artykułów:", error);
         res.status(500).json({ message: "Nie udało się pobrać artykułów." });

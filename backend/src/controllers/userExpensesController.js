@@ -1,18 +1,31 @@
 const pool = require('../db/db');
 
 exports.getUserExpenses = async (req, res) => {
+  const userId = req.user.id;
+  const page = parseInt(req.query.page, 10) || 1;
+  const limit = parseInt(req.query.limit, 10) || 10; 
+  const offset = (page - 1) * limit; 
+
   try {
-    const [rows] = await pool.query(
-      `SELECT e.id, e.title, e.price, e.note, e.date, c.name AS category_name 
-       FROM expenses e
-       LEFT JOIN categories c ON e.category_id = c.id
-       WHERE e.user_id = ? AND c.user_id = ?`,
-      [req.user.id, req.user.id]
+    const [expenses] = await pool.query(
+      "SELECT * FROM expenses WHERE user_id = ? LIMIT ? OFFSET ?",
+      [userId, limit, offset]
     );
-    res.json(rows);
+
+    const [total] = await pool.query(
+      "SELECT COUNT(*) as count FROM expenses WHERE user_id = ?",
+      [userId]
+    );
+
+    res.json({
+      expenses,
+      total: total[0].count,
+      page,
+      limit,
+    });
   } catch (error) {
-    console.error('Error fetching user expenses:', error);
-    res.status(500).json({ message: 'Nie udało się pobrać wydatków.' });
+    console.error("Błąd podczas pobierania wydatków:", error);
+    res.status(500).json({ message: "Nie udało się pobrać wydatków." });
   }
 };
 

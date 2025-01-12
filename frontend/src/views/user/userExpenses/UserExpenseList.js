@@ -1,53 +1,53 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ExpenseItem from "./UserExpenseItem";
-import Swal from "sweetalert2";
 
 const UserExpenseList = () => {
   const [expenses, setExpenses] = useState([]);
-  const [error, setError] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/user/expenses", {
+      .get(`http://localhost:5000/api/user/expenses?page=${currentPage}&limit=5`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       })
       .then((response) => {
-        setExpenses(response.data);
-        setError(false);
+        setExpenses(response.data.expenses);
+        setTotalPages(Math.ceil(response.data.total / response.data.limit));
       })
       .catch(() => {
-        setError(true);
+        console.error("Błąd podczas pobierania wydatków.");
       });
-  }, []);
+  }, [currentPage]);
 
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`http://localhost:5000/api/user/expenses/${id}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
-      setExpenses((prevExpenses) => prevExpenses.filter((expense) => expense.id !== id));
-      return Promise.resolve();
-    } catch (error) {
-      console.error("Błąd podczas usuwania wydatku:", error);
-      return Promise.reject();
-    }
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
   };
 
-  if (error) {
-    return <p>Błąd podczas pobierania wydatków.</p>;
-  }
-
-  if (expenses.length === 0) {
-    return <p>Brak wydatków do wyświetlenia.</p>;
-  }
+  const handlePrevPage = () => {
+    if (currentPage > 1) setCurrentPage((prev) => prev - 1);
+  };
 
   return (
     <div>
       <h1>Twoje Wydatki</h1>
-      {expenses.map((expense) => (
-        <ExpenseItem key={expense.id} expense={expense} onDelete={handleDelete} />
-      ))}
+      {expenses && expenses.length > 0 ? (
+        expenses.map((expense) => (
+          <ExpenseItem key={expense.id} expense={expense} />
+        ))
+      ) : (
+        <p>Brak wydatków do wyświetlenia.</p>
+      )}
+      <div className="pagination">
+        <button onClick={handlePrevPage} disabled={currentPage === 1}>
+          Poprzednia
+        </button>
+        <span>Strona {currentPage} z {totalPages}</span>
+        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+          Następna
+        </button>
+      </div>
     </div>
   );
 };
