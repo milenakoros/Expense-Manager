@@ -8,7 +8,7 @@ import Register from './views/auth/Register';
 import UserDashboard from "./views/user/userDashboard/UserDashboard";
 import Login from './views/auth/Login';
 import Home from "./views/homeDashboard/Home";
-import AdminDashboard from "./views/admin/AdminDashboard";
+import AdminDashboard from "./views/admin/adminDashboard/AdminDashboard";
 
 const App = () => {
   return (
@@ -18,8 +18,8 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/user/*" element={<UserDashboard />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        
+        <Route path="/admin/*" element={<AdminDashboard />} />
+
         <Route path="/expenses/:id" element={<ExpenseDetails />} />
         <Route path="/add" element={<AddExpense />} />
         <Route path="/expenses/:id/edit" element={<EditExpense />} />

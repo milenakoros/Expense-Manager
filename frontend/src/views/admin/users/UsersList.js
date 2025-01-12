@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const AdminDashboard = () => {
+const UsersList = () => {
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
 
@@ -21,7 +21,7 @@ const AdminDashboard = () => {
 
   return (
     <div>
-      <h1>Panel Administratora</h1>
+      <h1>Lista użytkowników</h1>
       <table>
         <thead>
           <tr>
@@ -48,4 +48,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default UsersList;

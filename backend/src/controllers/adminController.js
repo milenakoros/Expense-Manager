@@ -13,6 +13,26 @@ exports.getAllUsers = async (req, res) => {
     }
 };
 
+exports.getUserDetails = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const [user] = await pool.query(
+            "SELECT id, username, email, role, created_at FROM users WHERE id = ?",
+            [id]
+        );
+
+        if (!user.length) {
+            return res.status(404).json({ message: "Użytkownik nie został znaleziony." });
+        }
+
+        res.json(user[0]);
+    } catch (error) {
+        console.error("Błąd podczas pobierania danych użytkownika:", error);
+        res.status(500).json({ message: "Nie udało się pobrać danych użytkownika." });
+    }
+};
+
 exports.updateUser = async (req, res) => {
     const { id } = req.params;
     const { username, email, role, password } = req.body;

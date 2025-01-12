@@ -84,13 +84,6 @@ const Register = () => {
           onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
           required
         />
-        {/* {errors.length > 0 && (
-          <ul style={{ color: 'red' }}>
-            {errors.map((err, index) => (
-              <li key={index}>{err.msg}</li>
-            ))}
-          </ul>
-        )} */}
         {errorMessage && <p className="auth-error">{errorMessage}</p>}
         <button type="submit">Zarejestruj się</button>
         <Link to="/" className="btn-back-to-home">

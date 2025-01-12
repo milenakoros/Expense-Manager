@@ -4,6 +4,7 @@ const { authMiddleware, adminMiddleware } = require("../middleware/authMiddlewar
 const adminController = require("../controllers/adminController");
 
 router.get("/users", authMiddleware, adminMiddleware, adminController.getAllUsers);
+router.get("/users/:id", authMiddleware, adminMiddleware, adminController.getUserDetails);
 router.put("/users/:id", authMiddleware, adminMiddleware, adminController.updateUser);
 router.delete("/users/:id", authMiddleware, adminMiddleware, adminController.deleteUser);
 
