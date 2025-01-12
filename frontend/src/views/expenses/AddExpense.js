@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from '../../services/axiosInstance';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Swal from "sweetalert2";
 
 const AddExpense = () => {
   const [title, setTitle] = useState("");
@@ -39,12 +40,18 @@ const AddExpense = () => {
   };
 
   const handleCancel = () => {
-    const confirmCancel = window.confirm(
-      "Czy na pewno chcesz anulować? Wprowadzone dane zostaną utracone."
-    );
-    if (confirmCancel) {
-      navigate("/");
-    }
+    Swal.fire({
+      title: "Czy na pewno chcesz anulować?",
+      text: "Wszelkie niezapisane zmiany zostaną utracone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Tak, anuluj",
+      cancelButtonText: "Nie, wróć",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate("/");
+      }
+    });
   };
 
   const handleAddCategory = () => {

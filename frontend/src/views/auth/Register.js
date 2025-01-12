@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axiosInstance from '../../services/axiosInstance';
 import { useNavigate, Link } from 'react-router-dom';
 import "../../styles/Auth.css";
+import Swal from "sweetalert2";
 
 const Register = () => {
   const [formData, setFormData] = useState({ username: '', email: '', password: '', confirmPassword: '' });
@@ -10,19 +11,44 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (formData.password !== formData.confirmPassword) {
-      setErrorMessage('Hasła muszą być takie same.');
+      setErrorMessage("Hasła muszą być takie same.");
+      Swal.fire({
+        icon: "warning",
+        title: "Błąd",
+        text: "Hasła muszą być takie same.",
+        confirmButtonText: "OK",
+      });
       return;
     }
+
     try {
-      await axiosInstance.post('http://localhost:5000/auth/register', formData);
-      alert('Rejestracja zakończona sukcesem!');
-      navigate('/login');
+      await axiosInstance.post("http://localhost:5000/auth/register", formData);
+
+      Swal.fire({
+        icon: "success",
+        title: "Sukces",
+        text: "Rejestracja zakończona sukcesem!",
+        confirmButtonText: "Przejdź do logowania",
+      }).then(() => {
+        navigate("/login");
+      });
+
     } catch (error) {
-      setErrorMessage(
+      const errorMessage =
         error.response?.data?.message ||
-        (error.response?.data?.errors?.[0]?.msg || 'Wystąpił błąd podczas rejestracji.')
-      );
+        error.response?.data?.errors?.[0]?.msg ||
+        "Wystąpił błąd podczas rejestracji.";
+
+      Swal.fire({
+        icon: "error",
+        title: "Błąd",
+        text: errorMessage,
+        confirmButtonText: "OK",
+      });
+
+      setErrorMessage(errorMessage);
     }
   };
 

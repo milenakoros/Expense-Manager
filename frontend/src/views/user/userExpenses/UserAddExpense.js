@@ -4,6 +4,7 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../../styles/User.css"
+import Swal from "sweetalert2";
 
 const UserAddExpense = () => {
     const [title, setTitle] = useState("");
@@ -83,9 +84,18 @@ const UserAddExpense = () => {
     };
 
     const handleCancel = () => {
-        if (window.confirm("Czy na pewno chcesz anulować?")) {
-            navigate("/user/expenses");
-        }
+        Swal.fire({
+            title: "Czy na pewno chcesz anulować?",
+            text: "Wszelkie niezapisane zmiany zostaną utracone.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Tak, anuluj",
+            cancelButtonText: "Nie, wróć",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                navigate("/user/expenses");
+            }
+        });
     };
 
     return (

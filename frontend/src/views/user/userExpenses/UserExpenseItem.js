@@ -1,11 +1,28 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const UserExpenseItem = ({ expense, onDelete }) => {
+
     const handleDelete = () => {
-        if (window.confirm(`Czy na pewno chcesz usunąć wydatek "${expense.title}"?`)) {
-            onDelete(expense.id);
-        }
+        Swal.fire({
+            title: `Czy na pewno chcesz usunąć wydatek "${expense.title}"?`,
+            text: "Tej operacji nie można cofnąć.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Tak, usuń",
+            cancelButtonText: "Anuluj",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                onDelete(expense.id);
+                Swal.fire({
+                    icon: "success",
+                    title: "Usunięto",
+                    text: `Wydatek "${expense.title}" został pomyślnie usunięty.`,
+                    confirmButtonText: "OK",
+                });
+            }
+        });
     };
 
     return (

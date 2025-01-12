@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from '../../../services/axiosInstance';
 import CategoryItem from "./UserCategoryItem";
 import "../../../styles/User.css";
+import Swal from "sweetalert2";
 
 const CategoryList = () => {
   const [categories, setCategories] = useState([]);
@@ -30,25 +31,45 @@ const CategoryList = () => {
       })
       .then(() => {
         setCategories(categories.filter((category) => category.id !== id));
-        alert("Kategoria została usunięta pomyślnie.");
+        Swal.fire({
+          icon: "success",
+          title: "Sukces",
+          text: "Kategoria została usunięta pomyślnie!",
+          confirmButtonText: "OK",
+        });
       })
       .catch((error) => {
         if (
           error.response?.status === 400 &&
           error.response?.data?.message.includes("Nie można usunąć")
         ) {
-          const userConfirmed = window.confirm(
-            `Do kategorii "${categoryToDelete.name}" są przypisane wydatki. Czy chcesz przejść do następnego kroku, aby przenieść wydatki do innej kategorii? Jeśli nie, anulujesz usuwanie.`
-          );
-
-          if (userConfirmed) {
-            navigate(`/user/categories/${id}/reassign`);
-          } else {
-            alert("Usuwanie kategorii zostało anulowane.");
-          }
+          Swal.fire({
+            icon: "warning",
+            title: "Kategoria jest używana",
+            text: `Do kategorii "${categoryToDelete.name}" są przypisane wydatki. Czy chcesz przejść do następnego kroku, aby przenieść wydatki do innej kategorii? Jeśli nie, anulujesz usuwanie.`,
+            showCancelButton: true,
+            confirmButtonText: "Przejdź dalej",
+            cancelButtonText: "Anuluj",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              navigate(`/user/categories/${id}/reassign`);
+            } else {
+              Swal.fire({
+                icon: "info",
+                title: "Anulowano",
+                text: "Usuwanie kategorii zostało anulowane.",
+                confirmButtonText: "OK",
+              });
+            }
+          });
         } else {
           console.error("Błąd podczas usuwania kategorii:", error.response?.data || error);
-          alert("Nie udało się usunąć kategorii.");
+          Swal.fire({
+            icon: "error",
+            title: "Błąd",
+            text: "Nie udało się usunąć kategorii.",
+            confirmButtonText: "OK",
+          });
         }
       });
   };

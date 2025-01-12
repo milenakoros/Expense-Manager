@@ -2,14 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axiosInstance from '../../../services/axiosInstance';
 import "../../../styles/User.css";
+import Swal from "sweetalert2";
 
 const UserEditCategory = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     axiosInstance
@@ -21,16 +20,25 @@ const UserEditCategory = () => {
         setName(name);
         setDescription(description);
       })
-      .catch((error) => {
-        console.error("Błąd podczas pobierania szczegółów kategorii:", error);
-        setErrorMessage("Nie udało się pobrać danych kategorii.");
+      .catch(() => {
+        Swal.fire({
+          icon: "error",
+          title: "Błąd",
+          text: "Nie udało się pobrać danych kategorii.",
+          confirmButtonText: "OK",
+        });
       });
   }, [id]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!name) {
-      setErrorMessage("Nazwa kategorii jest wymagana!");
+      Swal.fire({
+        icon: "warning",
+        title: "Uwaga",
+        text: "Nazwa kategorii jest wymagana!",
+        confirmButtonText: "OK",
+      });
       return;
     }
 
@@ -41,26 +49,43 @@ const UserEditCategory = () => {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       })
       .then(() => {
-        setSuccessMessage("Kategoria zaktualizowana pomyślnie!");
-        navigate("/user/categories");
+        Swal.fire({
+          icon: "success",
+          title: "Sukces",
+          text: "Kategoria została zaktualizowana pomyślnie!",
+          confirmButtonText: "OK",
+        }).then(() => {
+          navigate("/user/categories");
+        });
       })
-      .catch((error) => {
-        console.error("Błąd podczas aktualizacji kategorii:", error);
-        setErrorMessage("Nie udało się zaktualizować kategorii.");
+      .catch(() => {
+        Swal.fire({
+          icon: "error",
+          title: "Błąd",
+          text: "Nie udało się zaktualizować kategorii.",
+          confirmButtonText: "OK",
+        });
       });
   };
 
   const handleCancel = () => {
-    if (window.confirm("Czy na pewno chcesz anulować?")) {
-      navigate("/user/categories");
-    }
+    Swal.fire({
+      title: "Czy na pewno chcesz anulować?",
+      text: "Wszelkie niezapisane zmiany zostaną utracone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Tak, anuluj",
+      cancelButtonText: "Nie, wróć",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate("/user/categories");
+      }
+    });
   };
 
   return (
     <div>
       <h1>Edytuj Kategorię</h1>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-      {successMessage && <p className="success-message">{successMessage}</p>}
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">Nazwa:</label>
         <input

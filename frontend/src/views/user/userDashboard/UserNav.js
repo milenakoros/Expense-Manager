@@ -1,13 +1,20 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const UserNav = () => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        localStorage.removeItem("token");
-        alert("Zostałeś wylogowany!");
-        navigate("/login");
+        Swal.fire({
+            icon: "success",
+            title: "Wylogowano",
+            text: "Zostałeś pomyślnie wylogowany!",
+            confirmButtonText: "OK",
+        }).then(() => {
+            localStorage.removeItem("token");
+            navigate("/login");
+        });
     };
 
     return (

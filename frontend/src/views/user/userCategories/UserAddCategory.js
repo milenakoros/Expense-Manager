@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from '../../../services/axiosInstance';
 import "../../../styles/User.css";
+import Swal from "sweetalert2";
 
 const AddCategory = () => {
   const [name, setName] = useState("");
@@ -34,9 +35,18 @@ const AddCategory = () => {
   };
 
   const handleCancel = () => {
-    if (window.confirm("Czy na pewno chcesz anulować?")) {
-      navigate("/user/categories");
-    }
+    Swal.fire({
+      title: "Czy na pewno chcesz anulować?",
+      text: "Wszelkie niezapisane zmiany zostaną utracone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Tak, anuluj",
+      cancelButtonText: "Nie, wróć",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate("/user/categories");
+      }
+    });
   };
 
   return (

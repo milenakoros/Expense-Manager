@@ -1,11 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const UserCategoryItem = ({ category, onDelete }) => {
   const handleDelete = () => {
-    if (window.confirm(`Czy na pewno chcesz usunąć kategorię "${category.name}"?`)) {
-      onDelete(category.id);
-    }
+    Swal.fire({
+      title: `Czy na pewno chcesz usunąć kategorię "${category.name}"?`,
+      text: "Tej operacji nie można cofnąć.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Tak, usuń",
+      cancelButtonText: "Anuluj",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        onDelete(category.id);
+        Swal.fire({
+          icon: "success",
+          title: "Usunięto",
+          text: `Kategoria "${category.name}" została pomyślnie usunięta.`,
+          confirmButtonText: "OK",
+        });
+      }
+    });
   };
 
   return (

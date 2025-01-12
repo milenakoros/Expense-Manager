@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axiosInstance from '../../services/axiosInstance';
@@ -72,12 +73,18 @@ const EditExpense = () => {
   };
 
   const handleCancel = () => {
-    const confirmCancel = window.confirm(
-      "Czy na pewno chcesz anulować? Wprowadzone dane zostaną utracone."
-    );
-    if (confirmCancel) {
-      navigate("/");
-    }
+    Swal.fire({
+      title: "Czy na pewno chcesz anulować?",
+      text: "Wszelkie niezapisane zmiany zostaną utracone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Tak, anuluj",
+      cancelButtonText: "Nie, wróć",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate("/");
+      }
+    });
   };
 
   if (loading) return <p>Ładowanie danych...</p>;

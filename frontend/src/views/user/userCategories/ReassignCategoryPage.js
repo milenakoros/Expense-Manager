@@ -45,13 +45,13 @@ const ReassignCategoryPage = () => {
             )
             .then(() => {
                 alert("Wydatki zostały przeniesione, a kategoria usunięta.");
-                navigate("/categories");
+                navigate("/user/categories");
             })
             .catch(() => alert("Nie udało się przenieść wydatków."));
     };
 
     const handleCancel = () => {
-        navigate("/categories");
+        navigate("/user/categories");
     };
 
     const handleAddCategory = () => {
