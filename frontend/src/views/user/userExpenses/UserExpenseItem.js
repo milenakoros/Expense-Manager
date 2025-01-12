@@ -14,16 +14,27 @@ const UserExpenseItem = ({ expense, onDelete }) => {
             cancelButtonText: "Anuluj",
         }).then((result) => {
             if (result.isConfirmed) {
-                onDelete(expense.id);
-                Swal.fire({
-                    icon: "success",
-                    title: "Usunięto",
-                    text: `Wydatek "${expense.title}" został pomyślnie usunięty.`,
-                    confirmButtonText: "OK",
-                });
+                onDelete(expense.id)
+                    .then(() => {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Usunięto",
+                            text: `Wydatek "${expense.title}" został pomyślnie usunięty.`,
+                            confirmButtonText: "OK",
+                        });
+                    })
+                    .catch(() => {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Błąd",
+                            text: "Nie udało się usunąć wydatku.",
+                            confirmButtonText: "OK",
+                        });
+                    });
             }
         });
     };
+
 
     return (
         <div className="expense-item">

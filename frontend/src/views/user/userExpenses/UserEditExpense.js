@@ -87,13 +87,24 @@ const UserEditExpense = () => {
             .put(`http://localhost:5000/api/user/expenses/${id}`, updatedExpense, {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
             })
-            .then((response) => {
-                alert("Wydatek zaktualizowany pomyślnie!");
-                navigate("/user/expenses");
+            .then(() => {
+                Swal.fire({
+                    title: "Sukces!",
+                    text: "Wydatek zaktualizowany pomyślnie!",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                }).then(() => {
+                    navigate(-1);
+                });
             })
             .catch((error) => {
                 console.error("Błąd podczas aktualizacji wydatku:", error.response);
-                alert("Nie udało się zaktualizować wydatku.");
+                Swal.fire({
+                    title: "Błąd",
+                    text: "Nie udało się zaktualizować wydatku.",
+                    icon: "error",
+                    confirmButtonText: "OK",
+                });
             });
     };
 
@@ -107,10 +118,10 @@ const UserEditExpense = () => {
             cancelButtonText: "Nie, wróć",
         }).then((result) => {
             if (result.isConfirmed) {
-                navigate("/user/expenses");
+                navigate(-1);
             }
         });
-    };
+    };    
 
     return (
         <div>
@@ -176,8 +187,8 @@ const UserEditExpense = () => {
                 >
                     Dodaj kategorię
                 </button>
-                <button className="btn-submit">Zapisz zmiany</button>
-                <button className="btn-cancel" onClick={handleCancel}>
+                <button type="submit" className="btn-submit">Zapisz zmiany</button>
+                <button type="button" className="btn-cancel" onClick={handleCancel}>
                     Anuluj
                 </button>
             </form>

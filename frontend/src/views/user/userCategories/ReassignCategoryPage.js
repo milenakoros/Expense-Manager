@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axiosInstance from '../../../services/axiosInstance';
 import "../../../styles/User.css";
+import Swal from "sweetalert2";
 
 const ReassignCategoryPage = () => {
     const { id } = useParams();
@@ -43,10 +44,23 @@ const ReassignCategoryPage = () => {
                 }
             )
             .then(() => {
-                alert("Wydatki zostały przeniesione, a kategoria usunięta.");
-                navigate("/user/categories");
+                Swal.fire({
+                    title: "Sukces!",
+                    text: "Wydatki zostały przeniesione, a kategoria usunięta.",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                }).then(() => {
+                    navigate("/user/categories");
+                });
             })
-            .catch(() => alert("Nie udało się przenieść wydatków."));
+            .catch(() => {
+                Swal.fire({
+                    title: "Błąd!",
+                    text: "Nie udało się przenieść wydatków.",
+                    icon: "error",
+                    confirmButtonText: "OK",
+                });
+            });
     };
 
     const handleCancel = () => {

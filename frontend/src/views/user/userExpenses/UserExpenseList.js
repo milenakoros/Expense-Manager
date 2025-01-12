@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ExpenseItem from "./UserExpenseItem";
+import Swal from "sweetalert2";
 
 const UserExpenseList = () => {
   const [expenses, setExpenses] = useState([]);
@@ -20,18 +21,17 @@ const UserExpenseList = () => {
       });
   }, []);
 
-  const handleDelete = (id) => {
-    axios
-      .delete(`http://localhost:5000/api/user/expenses/${id}`, {
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/user/expenses/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      })
-      .then(() => {
-        setExpenses(expenses.filter((expense) => expense.id !== id));
-      })
-      .catch((error) => {
-        console.error("Błąd podczas usuwania wydatku:", error);
-        alert("Nie udało się usunąć wydatku.");
       });
+      setExpenses((prevExpenses) => prevExpenses.filter((expense) => expense.id !== id));
+      return Promise.resolve();
+    } catch (error) {
+      console.error("Błąd podczas usuwania wydatku:", error);
+      return Promise.reject();
+    }
   };
 
   if (error) {
