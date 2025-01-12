@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from '../../../services/axiosInstance';
 import "../../../styles/User.css";
 
 const AddCategory = () => {
@@ -19,7 +19,7 @@ const AddCategory = () => {
 
     const newCategory = { name, description };
 
-    axios
+    axiosInstance
       .post("http://localhost:5000/api/user/categories", newCategory, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       })

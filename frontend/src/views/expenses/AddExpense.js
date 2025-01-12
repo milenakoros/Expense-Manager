@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from '../../services/axiosInstance';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -14,7 +14,7 @@ const AddExpense = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
+    axiosInstance
       .get("http://localhost:5000/categories")
       .then((response) => setCategories(response.data))
       .catch(() => alert("Nie udało się pobrać kategorii."));
@@ -29,7 +29,7 @@ const AddExpense = () => {
       date: date.toISOString().split("T")[0],
       categoryId,
     };
-    axios
+    axiosInstance
       .post("http://localhost:5000/expenses", newExpense)
       .then(() => {
         alert("Wydatek dodany pomyślnie!");
@@ -50,7 +50,7 @@ const AddExpense = () => {
   const handleAddCategory = () => {
     const newCategory = window.prompt("Podaj nazwę nowej kategorii:");
     if (newCategory) {
-      axios
+      axiosInstance
         .post("http://localhost:5000/categories", { name: newCategory })
         .then((response) => {
           setCategories([...categories, response.data]);

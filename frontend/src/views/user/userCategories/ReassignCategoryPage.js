@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from '../../../services/axiosInstance';
 import "../../../styles/User.css";
 
 const ReassignCategoryPage = () => {
@@ -14,7 +14,7 @@ const ReassignCategoryPage = () => {
 
     useEffect(() => {
         // Fetch expenses associated with the category
-        axios
+        axiosInstance
             .get(`http://localhost:5000/api/user/categories/${id}/expenses`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
             })
@@ -23,7 +23,7 @@ const ReassignCategoryPage = () => {
                 setErrorMessage("Nie udało się pobrać wydatków dla tej kategorii.")
             );
 
-        axios
+        axiosInstance
             .get("http://localhost:5000/api/user/categories", {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
             })
@@ -35,7 +35,7 @@ const ReassignCategoryPage = () => {
     }, [id]);
 
     const handleReassign = () => {
-        axios
+        axiosInstance
             .put(
                 `http://localhost:5000/api/user/categories/${id}/reassign`,
                 { newCategoryId: reassignToCategoryId },

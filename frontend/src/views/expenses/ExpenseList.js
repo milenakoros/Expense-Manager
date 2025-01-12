@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ExpenseItem from "./ExpenseItem";
-import axios from "axios";
+import axiosInstance from '../../services/axiosInstance';
 
 const ExpenseList = () => {
   const [expenses, setExpenses] = useState([]);
@@ -9,7 +9,7 @@ const ExpenseList = () => {
 
   const fetchExpenses = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/expenses");
+      const response = await axiosInstance.get("http://localhost:5000/expenses");
       setExpenses(response.data);
       setLoading(false);
     } catch (err) {
@@ -20,7 +20,7 @@ const ExpenseList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/expenses/${id}`);
+      await axiosInstance.delete(`http://localhost:5000/expenses/${id}`);
       setExpenses(expenses.filter(expense => expense.id !== id));
       alert("Wydatek został usunięty.");
     } catch (error) {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../../services/axiosInstance';
 import { useNavigate, Link } from 'react-router-dom';
 import "../../styles/Auth.css";
 
@@ -15,7 +15,7 @@ const Register = () => {
       return;
     }
     try {
-      await axios.post('http://localhost:5000/auth/register', formData);
+      await axiosInstance.post('http://localhost:5000/auth/register', formData);
       alert('Rejestracja zakończona sukcesem!');
       navigate('/login');
     } catch (error) {

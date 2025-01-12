@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from '../../../services/axiosInstance';
 import "../../../styles/User.css";
 
 const UserEditCategory = () => {
@@ -12,7 +12,7 @@ const UserEditCategory = () => {
   const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
-    axios
+    axiosInstance
       .get(`http://localhost:5000/api/user/categories/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       })
@@ -36,7 +36,7 @@ const UserEditCategory = () => {
 
     const updatedCategory = { name, description };
 
-    axios
+    axiosInstance
       .put(`http://localhost:5000/api/user/categories/${id}`, updatedCategory, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       })

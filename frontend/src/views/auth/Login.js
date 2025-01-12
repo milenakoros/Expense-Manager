@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../../services/axiosInstance';
 import { useNavigate, Link } from 'react-router-dom';
 import "../../styles/Auth.css";
 
@@ -12,7 +12,7 @@ const Login = () => {
     e.preventDefault();
     setErrorMessage('');
     try {
-      const response = await axios.post('http://localhost:5000/auth/login', formData);
+      const response = await axiosInstance.post('http://localhost:5000/auth/login', formData);
       localStorage.setItem('token', response.data.token);
       navigate('/user/expenses');
     } catch (error) {

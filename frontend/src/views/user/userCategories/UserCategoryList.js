@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from '../../../services/axiosInstance';
 import CategoryItem from "./UserCategoryItem";
 import "../../../styles/User.css";
 
@@ -10,7 +10,7 @@ const CategoryList = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
+    axiosInstance
       .get("http://localhost:5000/api/user/categories", {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       })
@@ -24,7 +24,7 @@ const CategoryList = () => {
   const handleDelete = (id) => {
     const categoryToDelete = categories.find((category) => category.id === id);
 
-    axios
+    axiosInstance
       .delete(`http://localhost:5000/api/user/categories/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       })

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from '../../services/axiosInstance';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -16,12 +16,12 @@ const EditExpense = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios
+    axiosInstance
       .get("http://localhost:5000/categories")
       .then((response) => setCategories(response.data))
       .catch(() => alert("Nie udało się pobrać kategorii."));
 
-    axios
+    axiosInstance
       .get(`http://localhost:5000/expenses/${id}`)
       .then((response) => {
         const { title, note, price, date, categoryId } = response.data;
@@ -37,7 +37,7 @@ const EditExpense = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
+    axiosInstance
       .put(`http://localhost:5000/expenses/${id}`, {
         title,
         note,
@@ -54,7 +54,7 @@ const EditExpense = () => {
   const handleAddCategory = () => {
     const newCategory = window.prompt("Podaj nazwę nowej kategorii:");
     if (newCategory) {
-      axios
+      axiosInstance
         .post("http://localhost:5000/categories", { name: newCategory })
         .then((response) => {
           setCategories([...categories, response.data]);
