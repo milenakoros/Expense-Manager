@@ -15,4 +15,13 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
+const adminMiddleware = (req, res, next) => {
+  if (req.user.role !== "admin") {
+    return res.status(403).json({ message: "Brak dostępu. Tylko dla administratorów." });
+  }
+  next();
+};
+
+module.exports = { adminMiddleware };
+
 module.exports = authMiddleware;
