@@ -19,6 +19,8 @@ const UserNav = () => {
 
     return (
         <nav>
+            <Link to="/">Strona główna</Link>
+            <Link to="/user/articles">Artykuły</Link>
             <Link to="/user/profile">Profil</Link>
             <Link to="/user/expenses">Wydatki</Link>
             <Link to="/user/expenses/add">Dodaj Wydatek</Link>

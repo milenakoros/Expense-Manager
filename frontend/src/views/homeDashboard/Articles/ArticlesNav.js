@@ -1,26 +1,19 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "../../../styles/Articles.css";
 
 const ArticlesNav = () => {
-    const navigate = useNavigate();
-
-    const handleBackToHome = () => {
-        navigate("/");
-    };
-
-    const handleAddArticle = () => {
-        navigate("/add-article");
-    };
-
     return (
         <nav className="articles-nav">
-            <button className="nav-button" onClick={handleBackToHome}>
+            <Link to="/" className="nav-button">
                 Powrót na stronę główną
-            </button>
-            <button className="nav-button" onClick={handleAddArticle}>
+            </Link>
+            <Link to="/articles" className="nav-button">
+                Wyświetl artykuły
+            </Link>
+            <Link to="/add-article" className="nav-button">
                 Dodaj artykuł
-            </button>
+            </Link>
         </nav>
     );
 };

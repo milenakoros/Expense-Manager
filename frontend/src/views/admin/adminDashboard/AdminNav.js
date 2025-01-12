@@ -19,6 +19,7 @@ const AdminNav = () => {
 
   return (
     <nav className="admin-dashboard-nav">
+      <Link to="/">Strona główna</Link>
       <Link to="/admin/users">Lista użytkowników</Link>
       <Link to="/admin/articles">Lista artykułów</Link>
       <button className="btn-logout" onClick={handleLogout}>

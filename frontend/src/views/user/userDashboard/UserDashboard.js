@@ -9,6 +9,7 @@ import UserCategoryList from "../userCategories/UserCategoryList";
 import UserAddCategory from "../userCategories/UserAddCategory";
 import UserEditCategory from "../userCategories/UserEditCategory";
 import ReassignCategoryPage from "../userCategories/ReassignCategoryPage";
+import Articles from "./UserArticles";
 import UserNav from "./UserNav";
 import "../../../styles/User.css"
 
@@ -28,6 +29,7 @@ const UserDashboard = () => {
                 <Route path="/categories/add" element={<UserAddCategory />} />
                 <Route path="/categories/:id/edit" element={<UserEditCategory />} />
                 <Route path="/categories/:id/reassign" element={<ReassignCategoryPage />} />
+                <Route path="/articles" element={<Articles />} />
             </Routes>
         </div>
     );

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../../styles/Articles.css";
 import Swal from "sweetalert2";
+import ArticlesNav from "./ArticlesNav";
 
 const AddArticle = () => {
     const navigate = useNavigate();
@@ -49,52 +50,55 @@ const AddArticle = () => {
     const handleCancel = () => navigate("/articles");
 
     return (
-        <div className="add-article-container">
-            <h1>Dodaj Artykuł</h1>
-            <form onSubmit={handleSubmit} className="add-article-form">
-                <label htmlFor="title">Tytuł:</label>
-                <input
-                    type="text"
-                    id="title"
-                    placeholder="Wpisz tytuł artykułu"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    required
-                />
-                <label htmlFor="content">Treść:</label>
-                <textarea
-                    id="content"
-                    placeholder="Wpisz treść artykułu"
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                    required
-                ></textarea>
-                <label htmlFor="link">Link (opcjonalnie):</label>
-                <input
-                    type="text"
-                    id="link"
-                    placeholder="Dodaj link do pełnej wersji artykułu"
-                    value={link}
-                    onChange={(e) => setLink(e.target.value)}
-                />
-                <label htmlFor="author">Autor:</label>
-                <input
-                    type="text"
-                    id="author"
-                    placeholder="Podaj pseudonim autora"
-                    value={author}
-                    onChange={(e) => setAuthor(e.target.value)}
-                    required
-                />
-                <div className="form-buttons">
-                    <button type="submit" className="btn-submit">
-                        Dodaj Artykuł
-                    </button>
-                    <button type="button" className="btn-cancel" onClick={handleCancel}>
-                        Anuluj
-                    </button>
-                </div>
-            </form>
+        <div>
+            <ArticlesNav />
+            <div className="add-article-container">
+                <h1>Dodaj Artykuł</h1>
+                <form onSubmit={handleSubmit} className="add-article-form">
+                    <label htmlFor="title">Tytuł:</label>
+                    <input
+                        type="text"
+                        id="title"
+                        placeholder="Wpisz tytuł artykułu"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        required
+                    />
+                    <label htmlFor="content">Treść:</label>
+                    <textarea
+                        id="content"
+                        placeholder="Wpisz treść artykułu"
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
+                        required
+                    ></textarea>
+                    <label htmlFor="link">Link (opcjonalnie):</label>
+                    <input
+                        type="text"
+                        id="link"
+                        placeholder="Dodaj link do pełnej wersji artykułu"
+                        value={link}
+                        onChange={(e) => setLink(e.target.value)}
+                    />
+                    <label htmlFor="author">Autor:</label>
+                    <input
+                        type="text"
+                        id="author"
+                        placeholder="Podaj pseudonim autora"
+                        value={author}
+                        onChange={(e) => setAuthor(e.target.value)}
+                        required
+                    />
+                    <div className="form-buttons">
+                        <button type="submit" className="btn-submit">
+                            Dodaj Artykuł
+                        </button>
+                        <button type="button" className="btn-cancel" onClick={handleCancel}>
+                            Anuluj
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 };
