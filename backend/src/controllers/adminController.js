@@ -183,8 +183,6 @@ exports.updateUserCategory = async (req, res) => {
     const { name, description } = req.body;
     const { categoryId } = req.params;
 
-    console.log("Dane wejściowe:", { name, description, categoryId });
-
     if (!categoryId || !name) {
         return res.status(400).json({ message: "Brak wymaganych danych: categoryId lub name." });
     }
@@ -194,8 +192,6 @@ exports.updateUserCategory = async (req, res) => {
             "UPDATE categories SET name = ?, description = ? WHERE id = ?",
             [name, description, categoryId]
         );
-
-        console.log("Liczba zaktualizowanych wierszy:", result.affectedRows);
 
         if (result.affectedRows === 0) {
             return res.status(404).json({ message: "Nie znaleziono kategorii do aktualizacji." });
