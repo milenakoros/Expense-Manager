@@ -7,7 +7,7 @@ exports.getUserExpenses = async (req, res) => {
        FROM expenses e
        LEFT JOIN categories c ON e.category_id = c.id
        WHERE e.user_id = ? AND c.user_id = ?`,
-      [req.user.id, req.user.id] 
+      [req.user.id, req.user.id]
     );
     res.json(rows);
   } catch (error) {
@@ -129,36 +129,5 @@ exports.deleteUserExpense = async (req, res) => {
     res.json({ message: 'Wydatek usunięty.' });
   } catch (error) {
     res.status(500).json({ message: 'Nie udało się usunąć wydatku.' });
-  }
-};
-exports.getUserProfile = async (req, res) => {
-  try {
-    const [user] = await pool.query(
-      `SELECT id, username, email FROM users WHERE id = ?`,
-      [req.user.id]
-    );
-    if (!user.length) {
-      return res.status(404).json({ message: "Użytkownik nie znaleziony." });
-    }
-    res.json(user[0]);
-  } catch (error) {
-    res.status(500).json({ message: "Nie udało się pobrać danych użytkownika." });
-  }
-};
-
-exports.updateUserProfile = async (req, res) => {
-  const { username } = req.body;
-  if (!username) {
-    return res.status(400).json({ message: "Nazwa użytkownika jest wymagana." });
-  }
-
-  try {
-    await pool.query(
-      `UPDATE users SET username = ? WHERE id = ?`,
-      [username, req.user.id]
-    );
-    res.json({ message: "Profil zaktualizowany pomyślnie." });
-  } catch (error) {
-    res.status(500).json({ message: "Nie udało się zaktualizować profilu." });
   }
 };

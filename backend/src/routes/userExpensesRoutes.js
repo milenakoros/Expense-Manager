@@ -8,7 +8,5 @@ router.get('/user/expenses/:id', authMiddleware, userExpensesController.getUserE
 router.post('/user/expenses', authMiddleware, userExpensesController.addUserExpense);
 router.put('/user/expenses/:id', authMiddleware, userExpensesController.updateUserExpense);
 router.delete('/user/expenses/:id', authMiddleware, userExpensesController.deleteUserExpense);
-router.get("/user/profile", authMiddleware, userExpensesController.getUserProfile);
-router.put("/user/profile", authMiddleware, userExpensesController.updateUserProfile);
 
 module.exports = router;

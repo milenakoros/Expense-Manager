@@ -13,7 +13,6 @@ const ReassignCategoryPage = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Fetch expenses associated with the category
         axiosInstance
             .get(`http://localhost:5000/api/user/categories/${id}/expenses`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },

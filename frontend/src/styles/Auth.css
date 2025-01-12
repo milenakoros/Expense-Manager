@@ -39,7 +39,7 @@ form textarea {
 }
 
 form button {
-  font-size: 1.3em;
+  font-size: 1em;
 }
 
 .auth-error {
@@ -67,4 +67,18 @@ form button {
 
 .btn-back-to-home:active {
   background-color: #003d80;
+}
+
+.btn-change-password {
+  background-color: #3652f4;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-change-password:hover {
+  background-color: #0f27ac;
 }
