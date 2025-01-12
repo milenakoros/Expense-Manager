@@ -3,7 +3,7 @@ const router = express.Router();
 const { authMiddleware, adminMiddleware } = require("../middleware/authMiddleware");
 const adminController = require("../controllers/adminController");
 
-router.put("/users/:userId/expenses/:expenseId", adminController.adminUpdateExpense);
+router.put("/users/:userId/expenses/:expenseId", adminController.updateUserExpense);
 router.get("/users/:userId/expenses/:expenseId", adminController.getUserExpense);
 router.put("/users/:userId/categories/:categoryId", adminController.updateUserExpense);
 
